@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Record {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
