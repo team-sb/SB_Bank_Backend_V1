@@ -1,4 +1,4 @@
-package com.example.sbbank.payload;
+package com.example.sbbank.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
