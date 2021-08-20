@@ -1,4 +1,4 @@
-package com.example.sbbank.payload;
+package com.example.sbbank.payload.request;
 
 import com.example.sbbank.entity.Authority;
 import com.example.sbbank.entity.member.Member;
@@ -12,14 +12,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MemberJoinRequestDto {
     private String name;
-    private String number;
     private String username;
     private String password;
 
     public Member toEntity() {
         return Member.builder()
                 .name(name)
-                .number(number)
                 .username(username)
                 .password(password)
                 .authority(Authority.ROLE_USER)
