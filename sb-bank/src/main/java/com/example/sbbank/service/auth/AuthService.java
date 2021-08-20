@@ -1,11 +1,11 @@
-package com.example.sbbank.service.member;
+package com.example.sbbank.service.auth;
 
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.security.jwt.JwtTokenProvider;
-import com.example.sbbank.payload.MemberLoginRequestDto;
-import com.example.sbbank.payload.MemberJoinRequestDto;
-import com.example.sbbank.payload.TokenResponse;
+import com.example.sbbank.payload.request.MemberLoginRequestDto;
+import com.example.sbbank.payload.request.MemberJoinRequestDto;
+import com.example.sbbank.payload.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class AuthService {
         return "success join";
     }
 
-    public TokenResponse login(MemberLoginRequestDto request) {
+    public TokenResponseDto login(MemberLoginRequestDto request) {
         Member member = memberRepository.findByUsername(request.getUsername())
                 .orElseThrow();
 
@@ -38,5 +38,4 @@ public class AuthService {
 
         return tokenProvider.createToken(member.getUsername(), member.getAuthority());
     }
-
 }
