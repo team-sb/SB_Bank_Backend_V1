@@ -1,7 +1,7 @@
 package com.example.sbbank.security.jwt;
 
 import com.example.sbbank.entity.Authority;
-import com.example.sbbank.payload.TokenResponse;
+import com.example.sbbank.payload.response.TokenResponseDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,7 +32,7 @@ public class JwtTokenProvider {
         return Base64.getEncoder().encodeToString(secretkey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public TokenResponse createToken(String userPk, Authority role) {
+    public TokenResponseDto createToken(String userPk, Authority role) {
         Date now = new Date();
 
         String token = Jwts.builder()
@@ -43,7 +43,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, init())
                 .compact();
 
-        return new TokenResponse(token);
+        return new TokenResponseDto(token);
     }
 
     public boolean validateToken(String jwtToken) {
