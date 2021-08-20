@@ -20,6 +20,7 @@ public class Record {
     private Integer money; // 거래 금액
 
     @Setter
+    @Enumerated(EnumType.STRING)
     private Transaction transactionType;
     private Date transactionDate;
     private Integer balance; // 잔액
