@@ -1,11 +1,9 @@
 package com.example.sbbank.entity.account;
 
 import com.example.sbbank.entity.member.Member;
-import com.example.sbbank.service.Transaction;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.sbbank.entity.Transaction;
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -17,12 +15,16 @@ import java.util.Date;
 public class Account {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
+    private Integer target;
+    private Integer money; // 거래 금액
+
+    @Setter
     private Transaction transactionType;
     private Date transactionDate;
-    private Long balance; // 잔액
+    private Integer balance; // 잔액
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "memberId")
-    private Member member;
+    private Member member; // 계좌 주인
 }
