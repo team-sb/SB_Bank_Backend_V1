@@ -1,5 +1,6 @@
 package com.example.sbbank.entity.member;
 import com.example.sbbank.entity.Authority;
+import com.example.sbbank.entity.account.Account;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,13 +19,15 @@ public class Member {
     private String name;
 
     @Column(unique = true)
-    private String number;
-
-    @Column(unique = true)
     private String username;
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
+
+/*    @Setter
+    @OneToOne
+    @JoinColumn(name = "accountId")
+    private Account account;*/
 
 }
