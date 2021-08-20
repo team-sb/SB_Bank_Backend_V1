@@ -1,9 +1,9 @@
 package com.example.sbbank.controller.auth;
 
-import com.example.sbbank.payload.MemberLoginRequestDto;
-import com.example.sbbank.payload.MemberJoinRequestDto;
-import com.example.sbbank.payload.TokenResponse;
-import com.example.sbbank.service.member.AuthService;
+import com.example.sbbank.payload.request.MemberLoginRequestDto;
+import com.example.sbbank.payload.request.MemberJoinRequestDto;
+import com.example.sbbank.payload.response.TokenResponseDto;
+import com.example.sbbank.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +20,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public TokenResponse login(@RequestBody MemberLoginRequestDto request) {
+    public TokenResponseDto login(@RequestBody MemberLoginRequestDto request) {
         return authService.login(request);
     }
 
