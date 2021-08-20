@@ -1,6 +1,5 @@
-package com.example.sbbank.payload;
+package com.example.sbbank.payload.request;
 
-import com.example.sbbank.entity.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountRequest {
+public class TransferRequestDto {
     private Integer target;
     private Integer money;
-    private Transaction type;
-    private Integer balance;
 }
