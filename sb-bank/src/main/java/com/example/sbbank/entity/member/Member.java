@@ -1,4 +1,5 @@
 package com.example.sbbank.entity.member;
+import com.example.sbbank.entity.Authority;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(unique = true)
     private String name;
@@ -22,5 +23,8 @@ public class Member {
     @Column(unique = true)
     private String username;
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
 }
