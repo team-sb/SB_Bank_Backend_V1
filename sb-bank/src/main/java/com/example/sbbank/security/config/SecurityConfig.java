@@ -1,7 +1,6 @@
-package com.example.sbbank.config;
+package com.example.sbbank.security.config;
 
-import com.example.sbbank.jwt.JwtSecurityConfig;
-import com.example.sbbank.jwt.JwtTokenProvider;
+import com.example.sbbank.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
