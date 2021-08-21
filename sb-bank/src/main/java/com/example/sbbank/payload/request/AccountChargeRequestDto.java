@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AccountChargeRequestDto {
     private Integer money;
+    private Integer secPassword;
 }

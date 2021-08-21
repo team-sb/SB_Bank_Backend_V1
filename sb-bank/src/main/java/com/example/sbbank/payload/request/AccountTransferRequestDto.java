@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class AccountTransferRequestDto {
     private Integer target;
     private Integer money;
+    private Integer secPassword;
 }

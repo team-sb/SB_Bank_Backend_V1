@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountRegisterRequestDto {
-    private String password;
+    private Integer secPassword;
 }
