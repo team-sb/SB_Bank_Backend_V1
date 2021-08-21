@@ -6,6 +6,8 @@ import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.Record;
 import com.example.sbbank.entity.account.RecordRepository;
 import com.example.sbbank.entity.member.Member;
+import com.example.sbbank.exception.InvalidTokenException;
+import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountRegisterRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
@@ -25,8 +27,8 @@ public class AccountService {
 
     public AccountRegisterResponseDto register(AccountRegisterRequestDto request, Member member) {
 
-        if(!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            throw new IllegalArgumentException();
+        if(request.getSecPassword().equals(member.getSecPassword())) {
+            throw new InvalidTokenException();
         }
 
         Random rd = new Random();
@@ -44,6 +46,10 @@ public class AccountService {
     }
 
     public String transfer(AccountTransferRequestDto request, Member member) {
+
+        if(request.getSecPassword().equals(member.getSecPassword())) {
+            throw new InvalidTokenException();
+        }
 
         Record record = Record.builder()
                 .target(request.getTarget())
@@ -64,6 +70,11 @@ public class AccountService {
     }
 
     public String charge(AccountChargeRequestDto request, Member member) {
+
+        if(request.getSecPassword().equals(member.getSecPassword())) {
+            throw new InvalidTokenException();
+        }
+
         Integer setBalance = request.getMoney();
 
         Account setAccount = accountRepository.findById(member.getId())
@@ -71,7 +82,7 @@ public class AccountService {
                     account.setBalance(account.getBalance() + setBalance);
                     return account;
                 })
-                .orElseThrow();
+                .orElseThrow(UserNotFoundException::new);
 
         accountRepository.save(setAccount);
         return "success charge";
