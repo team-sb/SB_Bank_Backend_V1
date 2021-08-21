@@ -6,8 +6,9 @@ import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.Record;
 import com.example.sbbank.entity.account.RecordRepository;
 import com.example.sbbank.entity.member.Member;
+import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountRegisterRequestDto;
-import com.example.sbbank.payload.request.TransferRequestDto;
+import com.example.sbbank.payload.request.AccountTransferRequestDto;
 import com.example.sbbank.payload.response.AccountRegisterResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,8 +33,8 @@ public class AccountService {
         Integer rdAcc = rd.nextInt(999999999) + 111111111;
 
         Account account = Account.builder()
-                .account(rdAcc)
-                .balance(1000)
+                .accountNumber(rdAcc)
+                .balance(0)
                 .member(member)
                 .build();
 
@@ -42,7 +43,7 @@ public class AccountService {
         return new AccountRegisterResponseDto(rdAcc);
     }
 
-    public String record(TransferRequestDto request, Member member) {
+    public String transfer(AccountTransferRequestDto request, Member member) {
 
         Record record = Record.builder()
                 .target(request.getTarget())
@@ -59,7 +60,21 @@ public class AccountService {
         }
 
         recordRepository.save(record);
-
         return "success record";
     }
+
+    public String charge(AccountChargeRequestDto request, Member member) {
+        Integer setBalance = request.getMoney();
+
+        Account setAccount = accountRepository.findById(member.getId())
+                .map(account -> {
+                    account.setBalance(account.getBalance() + setBalance);
+                    return account;
+                })
+                .orElseThrow();
+
+        accountRepository.save(setAccount);
+        return "success charge";
+    }
+
 }
