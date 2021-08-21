@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransferRequestDto {
+public class AccountTransferRequestDto {
     private Integer target;
     private Integer money;
 }
