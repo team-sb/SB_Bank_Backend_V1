@@ -6,6 +6,7 @@ import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.Record;
 import com.example.sbbank.entity.account.RecordRepository;
 import com.example.sbbank.entity.member.Member;
+import com.example.sbbank.exception.InvalidPasswordException;
 import com.example.sbbank.exception.InvalidTokenException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
@@ -27,8 +28,8 @@ public class AccountService {
 
     public AccountRegisterResponseDto register(AccountRegisterRequestDto request, Member member) {
 
-        if(request.getSecPassword().equals(member.getSecPassword())) {
-            throw new InvalidTokenException();
+        if(request.getSecPassword() == member.getSecPassword()) {
+            throw new InvalidPasswordException();
         }
 
         Random rd = new Random();
@@ -47,8 +48,8 @@ public class AccountService {
 
     public String transfer(AccountTransferRequestDto request, Member member) {
 
-        if(request.getSecPassword().equals(member.getSecPassword())) {
-            throw new InvalidTokenException();
+        if(request.getSecPassword() == member.getSecPassword()) {
+            throw new InvalidPasswordException();
         }
 
         Record record = Record.builder()
@@ -71,8 +72,8 @@ public class AccountService {
 
     public String charge(AccountChargeRequestDto request, Member member) {
 
-        if(request.getSecPassword().equals(member.getSecPassword())) {
-            throw new InvalidTokenException();
+        if(request.getSecPassword() == member.getSecPassword()) {
+            throw new InvalidPasswordException();
         }
 
         Integer setBalance = request.getMoney();
