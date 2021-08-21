@@ -21,7 +21,7 @@ public class Account {
     private Integer balance;
 
     @OneToOne
-    @JoinColumn(name = "memberId")
+    @JoinColumn(unique = true, name = "memberId")
     private Member member;
 
 }
