@@ -7,7 +7,6 @@ import com.example.sbbank.entity.account.Record;
 import com.example.sbbank.entity.account.RecordRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.InvalidPasswordException;
-import com.example.sbbank.exception.InvalidTokenException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountRegisterRequestDto;
@@ -30,7 +29,7 @@ public class AccountService {
 
         if(request.getSecPassword() == member.getSecPassword()) {
             throw new InvalidPasswordException();
-        }
+        } // ???
 
         Random rd = new Random();
         Integer rdAcc = rd.nextInt(999999999) + 111111111;
@@ -57,7 +56,7 @@ public class AccountService {
                 .money(request.getMoney())
                 .transactionType(Transaction.RECEIVE)
                 .transactionDate(new Date())
-                .balance(0) // 0 아님
+                .balance(member.getAccount().getBalance())
                 .member(member)
                 .build();
 
