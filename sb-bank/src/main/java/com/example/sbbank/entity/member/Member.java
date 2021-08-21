@@ -21,6 +21,7 @@ public class Member {
     @Column(unique = true)
     private String username;
     private String password;
+    private Integer secPassword;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
