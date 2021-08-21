@@ -1,11 +1,7 @@
 package com.example.sbbank.entity.account;
 
 import com.example.sbbank.entity.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import javax.persistence.*;
 
 @Entity
@@ -19,7 +15,9 @@ public class Account {
     private Integer id;
 
     @Column(unique = true)
-    private Integer account;
+    private Integer accountNumber;
+
+    @Setter
     private Integer balance;
 
     @OneToOne
