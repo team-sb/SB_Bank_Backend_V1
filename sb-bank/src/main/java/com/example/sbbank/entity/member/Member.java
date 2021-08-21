@@ -26,9 +26,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-/*    @Setter
-    @OneToOne
-    @JoinColumn(name = "accountId")
-    private Account account;*/
+    @Setter
+    @OneToOne(mappedBy = "member")
+    private Account account;
 
 }
