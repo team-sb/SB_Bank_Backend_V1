@@ -2,6 +2,9 @@ package com.example.sbbank.service.auth;
 
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.member.MemberRepository;
+import com.example.sbbank.exception.InvalidPasswordException;
+import com.example.sbbank.exception.UserAlreadyExistsException;
+import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.security.jwt.JwtTokenProvider;
 import com.example.sbbank.payload.request.MemberLoginRequestDto;
 import com.example.sbbank.payload.request.MemberJoinRequestDto;
@@ -19,7 +22,7 @@ public class AuthService {
 
     public String join(MemberJoinRequestDto request) {
         if(memberRepository.existsByNameOrUsername(request.getName(), request.getUsername())) {
-            throw new RuntimeException();
+            throw new UserAlreadyExistsException();
         }
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -30,10 +33,10 @@ public class AuthService {
 
     public TokenResponseDto login(MemberLoginRequestDto request) {
         Member member = memberRepository.findByUsername(request.getUsername())
-                .orElseThrow();
+                .orElseThrow(UserNotFoundException::new);
 
         if(!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            throw new IllegalArgumentException();
+            throw new InvalidPasswordException();
         }
 
         return tokenProvider.createToken(member.getUsername(), member.getAuthority());

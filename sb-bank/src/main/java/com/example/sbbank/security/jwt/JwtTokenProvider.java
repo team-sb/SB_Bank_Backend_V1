@@ -1,6 +1,7 @@
 package com.example.sbbank.security.jwt;
 
 import com.example.sbbank.entity.Authority;
+import com.example.sbbank.exception.InvalidTokenException;
 import com.example.sbbank.payload.response.TokenResponseDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -52,7 +53,7 @@ public class JwtTokenProvider {
                     .getExpiration()
                     .before(new Date());
         } catch (Exception e) {
-            throw new IllegalArgumentException();
+            throw new InvalidTokenException();
         }
     }
 
