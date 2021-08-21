@@ -14,12 +14,14 @@ public class MemberJoinRequestDto {
     private String name;
     private String username;
     private String password;
+    private Integer secPassword;
 
     public Member toEntity() {
         return Member.builder()
                 .name(name)
                 .username(username)
                 .password(password)
+                .secPassword(secPassword)
                 .authority(Authority.ROLE_USER)
                 .build();
     }
