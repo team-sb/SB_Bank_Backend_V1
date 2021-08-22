@@ -17,6 +17,8 @@ public class Record {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer target;
+
+    @Setter
     private Integer money; // 거래 금액
 
     @Setter
