@@ -26,7 +26,6 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public AccountRegisterResponseDto register(AccountRegisterRequestDto request, Member member) {
-
         if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
             throw new InvalidPasswordException();
         }
@@ -46,40 +45,48 @@ public class AccountService {
     }
 
     public String transfer(AccountTransferRequestDto request, Member member) {
-
         if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
             throw new InvalidPasswordException();
         }
 
-        Record record = Record.builder()
+        Integer myBalance = member.getAccount().getBalance();
+        Integer targetBalance = accountRepository.findByAccountNumber(request.getTarget())
+                .map(account -> account.getBalance())
+                .orElseThrow(UserNotFoundException::new);
+        Integer requestMoney = request.getMoney();
+
+        Member me = accountRepository.findByAccountNumber(request.getTarget())
+                .map(account -> account.getMember())
+                .orElseThrow(UserNotFoundException::new);
+
+        Record sendRecord = Record.builder()
                 .target(request.getTarget())
-                .money(request.getMoney())
+                .money(requestMoney)
                 .transactionType(Transaction.RECEIVE)
                 .transactionDate(new Date())
-                .balance(member.getAccount().getBalance())
+                .bfBalance(myBalance)
+                .aftBalance(myBalance + requestMoney)
                 .member(member)
                 .build();
 
         if(request.getMoney() < 0) {
-            Transaction type = Transaction.SEND;
-            record.setTransactionType(type);
+            sendRecord.setTransactionType(Transaction.SEND);
         }
 
-        recordRepository.save(record);
+        recordRepository.save(sendRecord);
         return "success record";
     }
 
     public String charge(AccountChargeRequestDto request, Member member) {
-
         if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
             throw new InvalidPasswordException();
         }
 
-        Integer setBalance = request.getMoney();
+        Integer requestMoney = request.getMoney();
 
-        Account setAccount = accountRepository.findById(member.getId())
+        Account setAccount = accountRepository.findByMemberId(member.getId())
                 .map(account -> {
-                    account.setBalance(account.getBalance() + setBalance);
+                    account.setBalance(account.getBalance() + requestMoney);
                     return account;
                 })
                 .orElseThrow(UserNotFoundException::new);
