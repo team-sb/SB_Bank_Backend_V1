@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountRegisterationResponseDto {
+public class AccountRegistrationResponseDto {
     private Integer account;
 }

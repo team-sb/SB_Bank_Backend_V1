@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountRegisterationRequestDto {
+public class AccountRegistrationRequestDto {
     private Integer secPassword;
 }
