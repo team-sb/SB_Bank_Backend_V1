@@ -110,14 +110,23 @@ public class AccountService {
 
         Integer requestMoney = request.getMoney();
 
-        accountRepository.findByMemberId(member.getId())
-                .map(account -> {
-                    account.setBalance(account.getBalance() + requestMoney);
-                    accountRepository.save(account);
-                    return account;
-                })
-                .orElseThrow(UserNotFoundException::new);
-
+        if(requestMoney < 0) {
+            accountRepository.findByMemberId(member.getId())
+                    .map(account -> {
+                        account.setBalance(account.getBalance() - requestMoney);
+                        accountRepository.save(account);
+                        return account;
+                    })
+                    .orElseThrow(UserNotFoundException::new);
+        } else {
+            accountRepository.findByMemberId(member.getId())
+                    .map(account -> {
+                        account.setBalance(account.getBalance() + requestMoney);
+                        accountRepository.save(account);
+                        return account;
+                    })
+                    .orElseThrow(UserNotFoundException::new);
+        }
         return "success charge";
     }
 
