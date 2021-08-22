@@ -23,7 +23,8 @@ public class Record {
     @Enumerated(EnumType.STRING)
     private Transaction transactionType;
     private Date transactionDate;
-    private Integer balance; // 잔액
+    private Integer bfBalance; // 잔액
+    private Integer aftBalance;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
