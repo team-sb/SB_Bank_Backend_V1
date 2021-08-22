@@ -39,6 +39,6 @@ public class AuthService {
             throw new InvalidPasswordException();
         }
 
-        return tokenProvider.createToken(member.getUsername(), member.getAuthority());
+        return tokenProvider.createAccessToken(member.getUsername(), member.getAuthority());
     }
 }

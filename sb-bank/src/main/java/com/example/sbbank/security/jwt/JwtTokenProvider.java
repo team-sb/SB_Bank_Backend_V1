@@ -33,7 +33,7 @@ public class JwtTokenProvider {
         return Base64.getEncoder().encodeToString(secretkey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public TokenResponseDto createToken(String userPk, Authority role) {
+    public TokenResponseDto createAccessToken(String userPk, Authority role) {
         Date now = new Date();
 
         String token = Jwts.builder()
