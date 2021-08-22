@@ -13,7 +13,6 @@ import com.example.sbbank.payload.request.AccountRegisterRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
 import com.example.sbbank.payload.response.AccountRegisterResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Random;
@@ -23,7 +22,6 @@ import java.util.Random;
 public class AccountService {
     private final RecordRepository recordRepository;
     private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public AccountRegisterResponseDto register(AccountRegisterRequestDto request, Member member) {
         if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
@@ -40,7 +38,6 @@ public class AccountService {
                 .build();
 
         accountRepository.save(account);
-
         return new AccountRegisterResponseDto(rdAcc);
     }
 
@@ -49,13 +46,13 @@ public class AccountService {
             throw new InvalidPasswordException();
         }
 
+        Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
+
         Integer targetBalance = accountRepository.findByAccountNumber(request.getTarget())
                 .map(account -> account.getBalance())
                 .orElseThrow(UserNotFoundException::new);
-        Integer requestMoney = request.getMoney();
-
-        Member me = accountRepository.findByAccountNumber(request.getTarget())
+        Member targetId = accountRepository.findByAccountNumber(request.getTarget())
                 .map(account -> account.getMember())
                 .orElseThrow(UserNotFoundException::new);
 
@@ -76,7 +73,7 @@ public class AccountService {
                 .transactionDate(new Date())
                 .bfBalance(targetBalance)
                 .aftBalance(targetBalance - requestMoney)
-                .member(me)
+                .member(targetId)
                 .build();
 
         accountRepository.findByMemberId(member.getId())
