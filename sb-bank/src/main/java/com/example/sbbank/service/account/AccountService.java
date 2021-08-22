@@ -27,9 +27,9 @@ public class AccountService {
 
     public AccountRegisterResponseDto register(AccountRegisterRequestDto request, Member member) {
 
-        if(request.getSecPassword() == member.getSecPassword()) {
+        if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
             throw new InvalidPasswordException();
-        } // ???
+        }
 
         Random rd = new Random();
         Integer rdAcc = rd.nextInt(999999999) + 111111111;
@@ -47,7 +47,7 @@ public class AccountService {
 
     public String transfer(AccountTransferRequestDto request, Member member) {
 
-        if(request.getSecPassword() == member.getSecPassword()) {
+        if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
             throw new InvalidPasswordException();
         }
 
@@ -71,7 +71,7 @@ public class AccountService {
 
     public String charge(AccountChargeRequestDto request, Member member) {
 
-        if(request.getSecPassword() == member.getSecPassword()) {
+        if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
             throw new InvalidPasswordException();
         }
 
