@@ -6,6 +6,7 @@ import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.Record;
 import com.example.sbbank.entity.account.RecordRepository;
 import com.example.sbbank.entity.member.Member;
+import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.exception.InvalidPasswordException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
@@ -51,10 +52,10 @@ public class AccountService {
 
         Integer targetBalance = accountRepository.findByAccountNumber(request.getTarget())
                 .map(account -> account.getBalance())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(AccountNotFoundException::new);
         Member targetId = accountRepository.findByAccountNumber(request.getTarget())
                 .map(account -> account.getMember())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(AccountNotFoundException::new);
 
         Record sendRecord = Record.builder()
                 .target(request.getTarget())
@@ -90,7 +91,7 @@ public class AccountService {
                     accountRepository.save(account);
                     return account;
                 })
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(AccountNotFoundException::new);
 
         if(request.getMoney() < 0) {
             sendRecord.setTransactionType(Transaction.SEND);
@@ -109,14 +110,14 @@ public class AccountService {
 
         Integer requestMoney = request.getMoney();
 
-        Account setAccount = accountRepository.findByMemberId(member.getId())
+        accountRepository.findByMemberId(member.getId())
                 .map(account -> {
                     account.setBalance(account.getBalance() + requestMoney);
+                    accountRepository.save(account);
                     return account;
                 })
                 .orElseThrow(UserNotFoundException::new);
 
-        accountRepository.save(setAccount);
         return "success charge";
     }
 
