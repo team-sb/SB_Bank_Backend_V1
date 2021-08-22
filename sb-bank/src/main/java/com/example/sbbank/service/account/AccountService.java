@@ -69,11 +69,39 @@ public class AccountService {
                 .member(member)
                 .build();
 
+        Record receiveRecord = Record.builder()
+                .target(member.getAccount().getAccountNumber())
+                .money(-requestMoney)
+                .transactionType(Transaction.SEND)
+                .transactionDate(new Date())
+                .bfBalance(targetBalance)
+                .aftBalance(targetBalance - requestMoney)
+                .member(me)
+                .build();
+
+        accountRepository.findByMemberId(member.getId())
+                .map(account -> {
+                    account.setBalance(myBalance + requestMoney);
+                    accountRepository.save(account);
+                    return account;
+                })
+                .orElseThrow(UserNotFoundException::new);
+
+        accountRepository.findByAccountNumber(request.getTarget())
+                .map(account -> {
+                    account.setBalance(account.getBalance() - requestMoney);
+                    accountRepository.save(account);
+                    return account;
+                })
+                .orElseThrow(UserNotFoundException::new);
+
         if(request.getMoney() < 0) {
             sendRecord.setTransactionType(Transaction.SEND);
+            receiveRecord.setTransactionType(Transaction.RECEIVE);
         }
 
         recordRepository.save(sendRecord);
+        recordRepository.save(receiveRecord);
         return "success record";
     }
 
