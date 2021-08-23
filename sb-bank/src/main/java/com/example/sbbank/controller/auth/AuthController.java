@@ -5,21 +5,22 @@ import com.example.sbbank.payload.request.MemberJoinRequestDto;
 import com.example.sbbank.payload.response.TokenResponseDto;
 import com.example.sbbank.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/auth/join")
+    @PostMapping("/join")
+    @ResponseStatus(HttpStatus.CREATED)
     public String join(@RequestBody MemberJoinRequestDto request) {
         return authService.join(request);
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public TokenResponseDto login(@RequestBody MemberLoginRequestDto request) {
         return authService.login(request);
     }
