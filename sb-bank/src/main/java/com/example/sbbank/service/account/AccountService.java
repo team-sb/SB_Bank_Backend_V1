@@ -13,6 +13,7 @@ import com.example.sbbank.payload.request.AccountRegistrationRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Random;
@@ -22,9 +23,10 @@ import java.util.Random;
 public class AccountService {
     private final RecordRepository recordRepository;
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AccountRegistrationResponseDto register(AccountRegistrationRequestDto request, Member member) {
-        if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
+        if(passwordEncoder.matches(request.getSecPassword().toString(), member.getSecPassword().toString())) {
             throw new InvalidPasswordException();
         }
 
@@ -42,7 +44,7 @@ public class AccountService {
     }
 
     public String transfer(AccountTransferRequestDto request, Member member) {
-        if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
+        if(passwordEncoder.matches(request.getSecPassword().toString(), member.getSecPassword().toString())) {
             throw new InvalidPasswordException();
         }
 
@@ -103,7 +105,7 @@ public class AccountService {
     }
 
     public String charge(AccountChargeRequestDto request, Member member) {
-        if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
+        if(passwordEncoder.matches(request.getSecPassword().toString(), member.getSecPassword().toString())) {
             throw new InvalidPasswordException();
         }
 
