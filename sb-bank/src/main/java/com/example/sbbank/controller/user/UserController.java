@@ -1,6 +1,7 @@
 package com.example.sbbank.controller.user;
 
-import com.example.sbbank.payload.response.BalanceResponseDto;
+import com.example.sbbank.payload.response.UserBalanceResponseDto;
+import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import com.example.sbbank.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/balance/{user-id}")
-    public BalanceResponseDto balance(@PathVariable(name = "user-id") Integer id) {
+    public UserBalanceResponseDto balance(@PathVariable(name = "user-id") Integer id) {
         return userService.balance(id);
+    }
+
+    @GetMapping("/transaction/{user-id}")
+    public UserTransactionResponseDto everyTransaction(@PathVariable(name = "user-id") Integer id) {
+        return userService.everyTransaction(id);
     }
 
 }
