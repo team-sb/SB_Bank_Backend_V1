@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class AccountRegistrationRequestDto {
 
     @JsonProperty("sec_password")
-    private Integer secPassword;
+    private String secPassword;
 }

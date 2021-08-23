@@ -13,5 +13,5 @@ public class AccountTransferRequestDto {
     private Integer money;
 
     @JsonProperty("sec_password")
-    private Integer secPassword;
+    private String secPassword;
 }

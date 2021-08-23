@@ -14,7 +14,8 @@ public class MemberJoinRequestDto {
     @Size(min = 6, max = 12)
     private String password;
 
+    @Size(min = 4, max = 4)
     @JsonProperty("sec_password")
-    private Integer secPassword;
+    private String secPassword;
 
 }
