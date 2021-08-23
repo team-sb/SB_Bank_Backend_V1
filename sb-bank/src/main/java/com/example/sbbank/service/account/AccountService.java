@@ -8,7 +8,6 @@ import com.example.sbbank.entity.account.RecordRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.exception.InvalidPasswordException;
-import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountRegistrationRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
@@ -83,7 +82,7 @@ public class AccountService {
                     accountRepository.save(account);
                     return account;
                 })
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(AccountNotFoundException::new);
 
         accountRepository.findByAccountNumber(request.getTarget())
                 .map(account -> {
@@ -117,7 +116,7 @@ public class AccountService {
                         accountRepository.save(account);
                         return account;
                     })
-                    .orElseThrow(UserNotFoundException::new);
+                    .orElseThrow(AccountNotFoundException::new);
         } else {
             accountRepository.findByMemberId(member.getId())
                     .map(account -> {
@@ -125,7 +124,7 @@ public class AccountService {
                         accountRepository.save(account);
                         return account;
                     })
-                    .orElseThrow(UserNotFoundException::new);
+                    .orElseThrow(AccountNotFoundException::new);
         }
         return "success charge";
     }
