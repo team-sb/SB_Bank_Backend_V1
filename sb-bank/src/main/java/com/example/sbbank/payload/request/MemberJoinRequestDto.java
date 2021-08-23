@@ -2,18 +2,23 @@ package com.example.sbbank.payload.request;
 
 import com.example.sbbank.entity.Authority;
 import com.example.sbbank.entity.member.Member;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberJoinRequestDto {
     private String name;
     private String username;
+
+    @Setter
     private String password;
+
+    @JsonProperty("sec_password")
     private Integer secPassword;
 
     public Member toEntity() {
