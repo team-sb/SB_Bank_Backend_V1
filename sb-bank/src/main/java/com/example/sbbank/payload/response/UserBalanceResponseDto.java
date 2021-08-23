@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BalanceResponseDto {
+public class UserBalanceResponseDto {
     private Integer balance;
 }
