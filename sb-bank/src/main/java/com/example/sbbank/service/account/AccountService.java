@@ -10,9 +10,9 @@ import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.exception.InvalidPasswordException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
-import com.example.sbbank.payload.request.AccountRegisterRequestDto;
+import com.example.sbbank.payload.request.AccountRegistrationRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
-import com.example.sbbank.payload.response.AccountRegisterResponseDto;
+import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Date;
@@ -24,7 +24,7 @@ public class AccountService {
     private final RecordRepository recordRepository;
     private final AccountRepository accountRepository;
 
-    public AccountRegisterResponseDto register(AccountRegisterRequestDto request, Member member) {
+    public AccountRegistrationResponseDto register(AccountRegistrationRequestDto request, Member member) {
         if (Integer.compare(request.getSecPassword(), member.getSecPassword()) != 0) {
             throw new InvalidPasswordException();
         }
@@ -39,7 +39,7 @@ public class AccountService {
                 .build();
 
         accountRepository.save(account);
-        return new AccountRegisterResponseDto(rdAcc);
+        return new AccountRegistrationResponseDto(rdAcc);
     }
 
     public String transfer(AccountTransferRequestDto request, Member member) {

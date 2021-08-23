@@ -1,17 +1,15 @@
 package com.example.sbbank.controller.account;
 
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
-import com.example.sbbank.payload.request.AccountRegisterRequestDto;
+import com.example.sbbank.payload.request.AccountRegistrationRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
-import com.example.sbbank.payload.response.AccountRegisterResponseDto;
+import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
 import com.example.sbbank.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +18,9 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/register")
-    public AccountRegisterResponseDto register(@RequestBody AccountRegisterRequestDto requestDto,
-                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountRegistrationResponseDto register(@RequestBody AccountRegistrationRequestDto requestDto,
+                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
         return accountService.register(requestDto, userDetails.getMember());
     }
 
