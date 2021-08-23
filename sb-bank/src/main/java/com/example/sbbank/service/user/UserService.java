@@ -1,5 +1,6 @@
 package com.example.sbbank.service.user;
 
+import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.Record;
 import com.example.sbbank.entity.account.RecordRepository;
@@ -38,6 +39,23 @@ public class UserService {
                         record.getTransactionType(),
                         record.getBfBalance(),
                         record.getAftBalance()))
+                .collect(Collectors.toList());
+
+        return new UserTransactionResponseDto(records);
+    }
+
+    public UserTransactionResponseDto sendTransaction(Integer id) {
+        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(id)
+                .stream()
+                .map(record -> new UserTransactionResponseDto.everyTransaction(
+                        record.getMember().getId(),
+                        record.getTarget(),
+                        record.getMoney(),
+                        record.getTransactionDate(),
+                        record.getTransactionType(),
+                        record.getBfBalance(),
+                        record.getAftBalance()))
+                .filter(transaction -> transaction.getTransactionType() == Transaction.SEND)
                 .collect(Collectors.toList());
 
         return new UserTransactionResponseDto(records);
