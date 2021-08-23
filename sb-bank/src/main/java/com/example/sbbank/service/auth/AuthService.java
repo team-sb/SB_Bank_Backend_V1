@@ -31,7 +31,7 @@ public class AuthService {
                         .name(request.getName())
                         .username(request.getUsername())
                         .password(passwordEncoder.encode(request.getPassword()))
-                        .secPassword(request.getSecPassword())
+                        .secPassword(passwordEncoder.encode(request.getSecPassword()))
                         .authority(Authority.ROLE_USER)
                         .build());
 
