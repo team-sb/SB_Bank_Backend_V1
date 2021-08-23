@@ -25,4 +25,9 @@ public class UserController {
         return userService.everyTransaction(id);
     }
 
+    @GetMapping("/transaction/send/{user-id}")
+    public UserTransactionResponseDto sendTransaction(@PathVariable(name = "user-id") Integer id) {
+        return userService.sendTransaction(id);
+    }
+
 }
