@@ -30,4 +30,9 @@ public class UserController {
         return userService.sendTransaction(id);
     }
 
+    @GetMapping("/transaction/receive/{user-id}")
+    public UserTransactionResponseDto receiveTransaction(@PathVariable(name = "user-id") Integer id) {
+        return userService.receiveTransaction(id);
+    }
+
 }
