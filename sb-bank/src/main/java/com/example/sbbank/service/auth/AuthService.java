@@ -1,5 +1,6 @@
 package com.example.sbbank.service.auth;
 
+import com.example.sbbank.entity.Authority;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.InvalidPasswordException;
@@ -25,8 +26,14 @@ public class AuthService {
             throw new UserAlreadyExistsException();
         }
 
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
-        memberRepository.save(request.toEntity());
+        memberRepository.save(
+                Member.builder()
+                        .name(request.getName())
+                        .username(request.getUsername())
+                        .password(passwordEncoder.encode(request.getPassword()))
+                        .secPassword(request.getSecPassword())
+                        .authority(Authority.ROLE_USER)
+                        .build());
 
         return "success join";
     }
