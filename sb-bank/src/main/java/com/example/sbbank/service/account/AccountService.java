@@ -26,7 +26,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public AccountRegistrationResponseDto register(AccountRegistrationRequestDto request, Member member) {
-        if(passwordEncoder.matches(request.getSecPassword().toString(), member.getSecPassword().toString())) {
+        if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
             throw new InvalidPasswordException();
         }
 
@@ -44,7 +44,7 @@ public class AccountService {
     }
 
     public String transfer(AccountTransferRequestDto request, Member member) {
-        if(passwordEncoder.matches(request.getSecPassword().toString(), member.getSecPassword().toString())) {
+        if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
             throw new InvalidPasswordException();
         }
 
@@ -105,7 +105,9 @@ public class AccountService {
     }
 
     public String charge(AccountChargeRequestDto request, Member member) {
-        if(passwordEncoder.matches(request.getSecPassword().toString(), member.getSecPassword().toString())) {
+
+
+        if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
             throw new InvalidPasswordException();
         }
 
