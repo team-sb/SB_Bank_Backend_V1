@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import javax.validation.constraints.Size;
 
 @Getter
 @NoArgsConstructor
@@ -16,6 +17,7 @@ public class MemberJoinRequestDto {
     private String username;
 
     @Setter
+    @Size(min = 6, max = 12)
     private String password;
 
     @JsonProperty("sec_password")

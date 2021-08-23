@@ -7,6 +7,7 @@ import com.example.sbbank.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class AuthController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.CREATED)
-    public String join(@RequestBody MemberJoinRequestDto request) {
+    public String join(@Valid @RequestBody MemberJoinRequestDto request) {
         return authService.join(request);
     }
 
