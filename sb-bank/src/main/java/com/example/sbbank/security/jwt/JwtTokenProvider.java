@@ -26,7 +26,7 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
     private static final long tokenExpiration = 1000 * 60 * 5L;
-    private static final Long accessTokenExpiration = 1000 * 60 * 60 * 24 * 5L;
+    private static final long accessTokenExpiration = 1000 * 60 * 60 * 24 * 5L;
 
     @Value("${jwt.secret}")
     private String secretkey;
@@ -49,11 +49,12 @@ public class JwtTokenProvider {
         return new AccessTokenResponseDto(token);
     }
 
-    public TokenResponseDto createToken(String userPk) {
+    public TokenResponseDto createToken(String userPk, Authority role) {
         Date now = new Date();
 
         String token = Jwts.builder()
                 .setSubject(userPk)
+                .claim("role", role)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + tokenExpiration))
                 .signWith(SignatureAlgorithm.HS256, init())
