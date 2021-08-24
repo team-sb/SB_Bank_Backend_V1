@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final JwtTokenProvider tokenProvider;
 
     @Bean
@@ -32,12 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/account/**").authenticated()
                 .antMatchers("/user/**").authenticated()
+                .antMatchers("/auth/sec-login").authenticated()
+                .antMatchers("/account/**").hasRole("MANAGER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
     }
+
 }
