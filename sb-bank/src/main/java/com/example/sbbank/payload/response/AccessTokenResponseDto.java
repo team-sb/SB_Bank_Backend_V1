@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenResponseDto {
-    private String token;
+    private String accessToken;
 }
