@@ -2,10 +2,11 @@ package com.example.sbbank.controller.user;
 
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
+import com.example.sbbank.security.auth.CustomUserDetails;
 import com.example.sbbank.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,24 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/balance/{user-id}")
-    public UserBalanceResponseDto balance(@PathVariable(name = "user-id") Integer id) {
-        return userService.balance(id);
+    @GetMapping("/balance")
+    public UserBalanceResponseDto balance(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return userService.balance(userDetails.getMember());
     }
 
-    @GetMapping("/transaction/{user-id}")
-    public UserTransactionResponseDto everyTransaction(@PathVariable(name = "user-id") Integer id) {
-        return userService.everyTransaction(id);
+    @GetMapping("/transaction")
+    public UserTransactionResponseDto everyTransaction(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return userService.everyTransaction(userDetails.getMember());
     }
 
-    @GetMapping("/transaction/send/{user-id}")
-    public UserTransactionResponseDto sendTransaction(@PathVariable(name = "user-id") Integer id) {
-        return userService.sendTransaction(id);
+    @GetMapping("/transaction/send")
+    public UserTransactionResponseDto sendTransaction(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return userService.sendTransaction(userDetails.getMember());
     }
 
-    @GetMapping("/transaction/receive/{user-id}")
-    public UserTransactionResponseDto receiveTransaction(@PathVariable(name = "user-id") Integer id) {
-        return userService.receiveTransaction(id);
+    @GetMapping("/transaction/receive")
+    public UserTransactionResponseDto receiveTransaction(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return userService.receiveTransaction(userDetails.getMember());
     }
 
 }
