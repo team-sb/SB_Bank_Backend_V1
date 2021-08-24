@@ -17,7 +17,12 @@ spring:
       property-naming-strategy: SNAKE_CASE
 
 jwt:
+  header: ${HEADER}
+  prefix: ${PREFIX}
   secret: ${SECRET}
+  exp:
+    access: ${ACCESS}
+    sec: ${SEC}
 
 server:
   port: 8080
