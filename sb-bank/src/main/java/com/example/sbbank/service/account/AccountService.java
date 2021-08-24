@@ -6,14 +6,12 @@ import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.Record;
 import com.example.sbbank.entity.account.RecordRepository;
 import com.example.sbbank.entity.member.Member;
+import com.example.sbbank.exception.AccountAlreadyExistsException;
 import com.example.sbbank.exception.AccountNotFoundException;
-import com.example.sbbank.exception.InvalidPasswordException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
-import com.example.sbbank.payload.request.AccountRegistrationRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Random;
@@ -23,11 +21,10 @@ import java.util.Random;
 public class AccountService {
     private final RecordRepository recordRepository;
     private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public AccountRegistrationResponseDto register(AccountRegistrationRequestDto request, Member member) {
-        if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
-            throw new InvalidPasswordException();
+    public AccountRegistrationResponseDto register(Member member) {
+        if(accountRepository.existsByMemberId(member.getId())) {
+            throw new AccountAlreadyExistsException();
         }
 
         Random rd = new Random();
@@ -44,10 +41,6 @@ public class AccountService {
     }
 
     public String transfer(AccountTransferRequestDto request, Member member) {
-        if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
-            throw new InvalidPasswordException();
-        }
-
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
 
@@ -105,12 +98,6 @@ public class AccountService {
     }
 
     public String charge(AccountChargeRequestDto request, Member member) {
-
-
-        if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
-            throw new InvalidPasswordException();
-        }
-
         Integer requestMoney = request.getMoney();
 
         if(requestMoney < 0) {
