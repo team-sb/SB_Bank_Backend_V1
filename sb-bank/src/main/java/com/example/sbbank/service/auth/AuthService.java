@@ -6,10 +6,12 @@ import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.InvalidPasswordException;
 import com.example.sbbank.exception.UserAlreadyExistsException;
 import com.example.sbbank.exception.UserNotFoundException;
+import com.example.sbbank.payload.request.MemberSecLoginRequestDto;
+import com.example.sbbank.payload.response.TokenResponseDto;
 import com.example.sbbank.security.jwt.JwtTokenProvider;
 import com.example.sbbank.payload.request.MemberLoginRequestDto;
 import com.example.sbbank.payload.request.MemberJoinRequestDto;
-import com.example.sbbank.payload.response.TokenResponseDto;
+import com.example.sbbank.payload.response.AccessTokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class AuthService {
         return "success join";
     }
 
-    public TokenResponseDto login(MemberLoginRequestDto request) {
+    public AccessTokenResponseDto login(MemberLoginRequestDto request) {
         Member member = memberRepository.findByUsername(request.getUsername())
                 .orElseThrow(UserNotFoundException::new);
 
@@ -48,4 +50,13 @@ public class AuthService {
 
         return tokenProvider.createAccessToken(member.getUsername(), member.getAuthority());
     }
+
+    public TokenResponseDto secLogin(MemberSecLoginRequestDto request, Member member) {
+        if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
+            throw new InvalidPasswordException();
+        }
+
+        return tokenProvider.createToken(member.getUsername());
+    }
+
 }
