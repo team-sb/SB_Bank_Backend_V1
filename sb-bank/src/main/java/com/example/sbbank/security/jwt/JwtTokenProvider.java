@@ -2,6 +2,7 @@ package com.example.sbbank.security.jwt;
 
 import com.example.sbbank.entity.Authority;
 import com.example.sbbank.exception.InvalidTokenException;
+import com.example.sbbank.payload.response.AccessTokenResponseDto;
 import com.example.sbbank.payload.response.TokenResponseDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +25,8 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
-    private static final Long tokenExpiration = 1000 * 60 * 60 * 24 * 5L;
+    private static final long tokenExpiration = 1000 * 60 * 5L;
+    private static final Long accessTokenExpiration = 1000 * 60 * 60 * 24 * 5L;
 
     @Value("${jwt.secret}")
     private String secretkey;
@@ -33,12 +35,25 @@ public class JwtTokenProvider {
         return Base64.getEncoder().encodeToString(secretkey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public TokenResponseDto createAccessToken(String userPk, Authority role) {
+    public AccessTokenResponseDto createAccessToken(String userPk, Authority role) {
         Date now = new Date();
 
         String token = Jwts.builder()
                 .setSubject(userPk)
                 .claim("role", role)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + accessTokenExpiration))
+                .signWith(SignatureAlgorithm.HS256, init())
+                .compact();
+
+        return new AccessTokenResponseDto(token);
+    }
+
+    public TokenResponseDto createToken(String userPk) {
+        Date now = new Date();
+
+        String token = Jwts.builder()
+                .setSubject(userPk)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + tokenExpiration))
                 .signWith(SignatureAlgorithm.HS256, init())
