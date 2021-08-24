@@ -1,6 +1,7 @@
 package com.example.sbbank.security.auth;
 
 import com.example.sbbank.entity.member.MemberRepository;
+import com.example.sbbank.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return memberRepository.findByUsername(username)
                 .map(CustomUserDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("해당 유저가 존재하지 않습니다."));
+                .orElseThrow(UserNotFoundException::new);
     }
 }
