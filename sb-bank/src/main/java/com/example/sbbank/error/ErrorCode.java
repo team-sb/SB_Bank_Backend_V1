@@ -13,6 +13,7 @@ public enum ErrorCode {
     USER_ALREADY_EXISTS(409, "User Already Exists"),
     USER_NOT_FOUND(404, "User Not Found"),
 
+    ACCOUNT_ALREADY_EXISTS(409, "Account Already Exists"),
     ACCOUNT_NOT_FOUND(404, "Account Not Found");
 
     private final int status;
