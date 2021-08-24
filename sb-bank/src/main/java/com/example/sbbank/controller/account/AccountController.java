@@ -1,7 +1,6 @@
 package com.example.sbbank.controller.account;
 
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
-import com.example.sbbank.payload.request.AccountRegistrationRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
@@ -19,9 +18,8 @@ public class AccountController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountRegistrationResponseDto register(@RequestBody AccountRegistrationRequestDto requestDto,
-                                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return accountService.register(requestDto, userDetails.getMember());
+    public AccountRegistrationResponseDto register(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return accountService.register(userDetails.getMember());
     }
 
     @PostMapping("/transfer")
