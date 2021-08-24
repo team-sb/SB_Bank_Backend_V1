@@ -3,12 +3,12 @@ package com.example.sbbank.service.user;
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.RecordRepository;
+import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,17 +18,17 @@ public class UserService {
     private final AccountRepository accountRepository;
     private final RecordRepository recordRepository;
 
-    public UserBalanceResponseDto balance(Integer id) {
+    public UserBalanceResponseDto balance(Member member) {
 
-        Integer balance = accountRepository.findByMemberId(id)
+        Integer balance = accountRepository.findByMemberId(member.getId())
                 .map(account -> account.getBalance())
                 .orElseThrow(AccountNotFoundException::new);
 
         return new UserBalanceResponseDto(balance);
     }
 
-    public UserTransactionResponseDto everyTransaction(Integer id) {
-        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(id)
+    public UserTransactionResponseDto everyTransaction(Member member) {
+        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
@@ -43,8 +43,8 @@ public class UserService {
         return new UserTransactionResponseDto(records);
     }
 
-    public UserTransactionResponseDto sendTransaction(Integer id) {
-        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(id)
+    public UserTransactionResponseDto sendTransaction(Member member) {
+        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
@@ -60,8 +60,8 @@ public class UserService {
         return new UserTransactionResponseDto(records);
     }
 
-    public UserTransactionResponseDto receiveTransaction(Integer id) {
-        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(id)
+    public UserTransactionResponseDto receiveTransaction(Member member) {
+        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
