@@ -4,11 +4,11 @@ import com.example.sbbank.entity.member.Member;
 import lombok.*;
 import javax.persistence.*;
 
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Account {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
