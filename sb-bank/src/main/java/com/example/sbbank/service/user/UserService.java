@@ -3,8 +3,10 @@ package com.example.sbbank.service.user;
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.account.record.Transfer.TransferRecordRepository;
+import com.example.sbbank.entity.account.record.loan.LoanRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
+import com.example.sbbank.payload.response.AccountBorrowResponseDto;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final AccountRepository accountRepository;
     private final TransferRecordRepository transferRecordRepository;
+    private final LoanRepository loanRepository;
 
     public UserBalanceResponseDto balance(Member member) {
 
@@ -75,6 +78,19 @@ public class UserService {
                 .collect(Collectors.toList());
 
         return new UserTransactionResponseDto(records);
+    }
+
+    public List<AccountBorrowResponseDto> borrow(Member member) {
+        List<AccountBorrowResponseDto> borrows = loanRepository.findByMemberId(member.getId())
+                .stream()
+                .map(loanRecord -> new AccountBorrowResponseDto(
+                        loanRecord.getMoney(),
+                        loanRecord.getInterest(),
+                        loanRecord.getLoanExpirationDate()
+                ))
+                .collect(Collectors.toList());
+
+        return borrows;
     }
 
 }
