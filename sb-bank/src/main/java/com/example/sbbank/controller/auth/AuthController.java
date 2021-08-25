@@ -4,7 +4,7 @@ import com.example.sbbank.payload.request.MemberLoginRequestDto;
 import com.example.sbbank.payload.request.MemberJoinRequestDto;
 import com.example.sbbank.payload.request.MemberSecLoginRequestDto;
 import com.example.sbbank.payload.response.AccessTokenResponseDto;
-import com.example.sbbank.payload.response.TokenResponseDto;
+import com.example.sbbank.payload.response.SecTokenResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
 import com.example.sbbank.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,8 @@ public class AuthController {
     }
 
     @PostMapping("/sec-login")
-    public TokenResponseDto secLogin(@RequestBody MemberSecLoginRequestDto request,
-                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public SecTokenResponseDto secLogin(@RequestBody MemberSecLoginRequestDto request,
+                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
         return authService.secLogin(request, userDetails.getMember());
     }
 
