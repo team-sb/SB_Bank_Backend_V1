@@ -1,4 +1,4 @@
-package com.example.sbbank.entity.account;
+package com.example.sbbank.entity.account.record;
 
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.Transaction;
@@ -19,16 +19,16 @@ public class Record {
     private Integer target;
 
     @Setter
-    private Integer money; // 거래 금액
+    private Integer money;
 
     @Setter
     @Enumerated(EnumType.STRING)
     private Transaction transactionType;
     private Date transactionDate;
-    private Integer bfBalance; // 잔액
+    private Integer bfBalance;
     private Integer aftBalance;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
-    private Member member; // 계좌 주인
+    private Member member;
 }

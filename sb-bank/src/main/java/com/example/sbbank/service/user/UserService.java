@@ -2,7 +2,7 @@ package com.example.sbbank.service.user;
 
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.AccountRepository;
-import com.example.sbbank.entity.account.RecordRepository;
+import com.example.sbbank.entity.account.record.RecordRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
