@@ -1,14 +1,13 @@
 package com.example.sbbank.entity.account.record.loan;
 
+import com.example.sbbank.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.util.Date;
 
 @Getter
@@ -21,8 +20,13 @@ public class LoanRecord {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Max(value = 10000000)
     private Integer money;
     private Double interest;
     private Date loanExpirationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "memberId")
+    private Member member;
 
 }
