@@ -1,4 +1,4 @@
-package com.example.sbbank.controller.account;
+package com.example.sbbank.controller;
 
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;

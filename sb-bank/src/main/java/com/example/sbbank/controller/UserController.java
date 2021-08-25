@@ -1,4 +1,4 @@
-package com.example.sbbank.controller.user;
+package com.example.sbbank.controller;
 
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;

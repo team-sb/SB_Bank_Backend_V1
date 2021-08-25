@@ -1,4 +1,4 @@
-package com.example.sbbank.controller.auth;
+package com.example.sbbank.controller;
 
 import com.example.sbbank.payload.request.MemberLoginRequestDto;
 import com.example.sbbank.payload.request.MemberJoinRequestDto;
