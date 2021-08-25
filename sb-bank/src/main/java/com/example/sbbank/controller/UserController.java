@@ -4,7 +4,7 @@ import com.example.sbbank.payload.response.AccountBorrowResponseDto;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
-import com.example.sbbank.service.user.UserService;
+import com.example.sbbank.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,31 +17,31 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @GetMapping("/balance")
     public UserBalanceResponseDto balance(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userService.balance(userDetails.getMember());
+        return userServiceImpl.balance(userDetails.getMember());
     }
 
     @GetMapping("/transaction")
     public UserTransactionResponseDto everyTransaction(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userService.everyTransaction(userDetails.getMember());
+        return userServiceImpl.everyTransaction(userDetails.getMember());
     }
 
     @GetMapping("/transaction/send")
     public UserTransactionResponseDto sendTransaction(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userService.sendTransaction(userDetails.getMember());
+        return userServiceImpl.sendTransaction(userDetails.getMember());
     }
 
     @GetMapping("/transaction/receive")
     public UserTransactionResponseDto receiveTransaction(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userService.receiveTransaction(userDetails.getMember());
+        return userServiceImpl.receiveTransaction(userDetails.getMember());
     }
 
     @GetMapping("/loan")
     public List<AccountBorrowResponseDto> borrow(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userService.borrow(userDetails.getMember());
+        return userServiceImpl.borrow(userDetails.getMember());
     }
 
 }

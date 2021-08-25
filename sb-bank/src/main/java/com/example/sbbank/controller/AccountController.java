@@ -5,7 +5,7 @@ import com.example.sbbank.payload.request.AccountTransferRequestDto;
 import com.example.sbbank.payload.response.AccountBorrowResponseDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
-import com.example.sbbank.service.account.AccountService;
+import com.example.sbbank.service.account.AccountServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,30 +15,30 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
-    private final AccountService accountService;
+    private final AccountServiceImpl accountServiceImpl;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountRegistrationResponseDto register(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return accountService.register(userDetails.getMember());
+        return accountServiceImpl.register(userDetails.getMember());
     }
 
     @PostMapping("/transfer")
     public String transfer(@RequestBody AccountTransferRequestDto request,
                            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return accountService.transfer(request, userDetails.getMember());
+        return accountServiceImpl.transfer(request, userDetails.getMember());
     }
 
     @PostMapping("/charge")
     public String charge(@RequestBody AccountChargeRequestDto request,
                          @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return accountService.charge(request, userDetails.getMember());
+        return accountServiceImpl.charge(request, userDetails.getMember());
     }
 
-    @PostMapping("/borrow")
+    @PostMapping("/loan")
     public AccountBorrowResponseDto borrow(@RequestBody AccountChargeRequestDto request,
                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        return accountService.borrow(request, userDetails.getMember());
+        return accountServiceImpl.borrow(request, userDetails.getMember());
     }
 
 }
