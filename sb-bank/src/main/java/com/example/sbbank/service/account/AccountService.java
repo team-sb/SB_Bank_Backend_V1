@@ -4,8 +4,10 @@ import com.example.sbbank.entity.Authority;
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.Account;
 import com.example.sbbank.entity.account.AccountRepository;
-import com.example.sbbank.entity.account.record.Record;
-import com.example.sbbank.entity.account.record.RecordRepository;
+import com.example.sbbank.entity.account.record.Transfer.TransferRecord;
+import com.example.sbbank.entity.account.record.Transfer.TransferRecordRepository;
+import com.example.sbbank.entity.account.record.loan.LoanRecord;
+import com.example.sbbank.entity.account.record.loan.LoanRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.AccountAlreadyExistsException;
@@ -13,18 +15,23 @@ import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
+import com.example.sbbank.payload.response.AccountBorrowResponseDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
-    private final RecordRepository recordRepository;
+
+    private final TransferRecordRepository transferRecordRepository;
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
+    private final LoanRepository loanRepository;
 
     public AccountRegistrationResponseDto register(Member member) {
         if(accountRepository.existsByMemberId(member.getId())) {
@@ -45,6 +52,7 @@ public class AccountService {
     }
 
     public String transfer(AccountTransferRequestDto request, Member member) {
+
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
 
@@ -55,7 +63,7 @@ public class AccountService {
                 .map(account -> account.getMember())
                 .orElseThrow(AccountNotFoundException::new);
 
-        Record sendRecord = Record.builder()
+        TransferRecord sendTransferRecord = TransferRecord.builder()
                 .target(request.getTarget())
                 .money(requestMoney)
                 .transactionType(Transaction.RECEIVE)
@@ -65,7 +73,7 @@ public class AccountService {
                 .member(member)
                 .build();
 
-        Record receiveRecord = Record.builder()
+        TransferRecord receiveTransferRecord = TransferRecord.builder()
                 .target(member.getAccount().getAccountNumber())
                 .money(-requestMoney)
                 .transactionType(Transaction.SEND)
@@ -92,17 +100,19 @@ public class AccountService {
                 .orElseThrow(AccountNotFoundException::new);
 
         if(request.getMoney() < 0) {
-            sendRecord.setTransactionType(Transaction.SEND);
-            receiveRecord.setTransactionType(Transaction.RECEIVE);
+            sendTransferRecord.setTransactionType(Transaction.SEND);
+            receiveTransferRecord.setTransactionType(Transaction.RECEIVE);
         }
 
         setAuthority(member);
-        recordRepository.save(sendRecord);
-        recordRepository.save(receiveRecord);
+        transferRecordRepository.save(sendTransferRecord);
+        transferRecordRepository.save(receiveTransferRecord);
+
         return "success record";
     }
 
     public String charge(AccountChargeRequestDto request, Member member) {
+
         Integer requestMoney = request.getMoney();
 
         if(requestMoney < 0) {
@@ -124,7 +134,40 @@ public class AccountService {
         }
 
         setAuthority(member);
+
         return "success charge";
+    }
+
+    public AccountBorrowResponseDto borrow(AccountChargeRequestDto request, Member member) {
+
+        Double interest = request.getMoney() * 0.001;
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MONTH, 3);
+        Date expirationDate = cal.getTime();
+
+        LoanRecord loanRecord = LoanRecord.builder()
+                .money(request.getMoney())
+                .interest(interest)
+                .loanExpirationDate(expirationDate)
+                .build();
+
+        accountRepository.findByMemberId(member.getId())
+                .map(account -> {
+                    account.setBalance(account.getBalance() + request.getMoney());
+                    accountRepository.save(account);
+                    return account;
+                })
+                .orElseThrow();
+
+        loanRepository.save(loanRecord);
+
+        return AccountBorrowResponseDto.builder()
+                .money(loanRecord.getMoney())
+                .interest(loanRecord.getInterest())
+                .loanExpirationDate(loanRecord.getLoanExpirationDate())
+                .build();
+
     }
 
     public Member setAuthority(Member member) {
