@@ -6,7 +6,7 @@ import com.example.sbbank.entity.account.record.Transfer.TransferRecordRepositor
 import com.example.sbbank.entity.account.record.loan.LoanRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
-import com.example.sbbank.payload.response.AccountBorrowResponseDto;
+import com.example.sbbank.payload.response.AccountShowLoanResponseDto;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -86,17 +86,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AccountBorrowResponseDto> borrow(Member member) {
-        List<AccountBorrowResponseDto> borrows = loanRepository.findByMemberId(member.getId())
+    public List<AccountShowLoanResponseDto.Loan> borrow(Member member) {
+
+        List<AccountShowLoanResponseDto.Loan> loans = loanRepository.findByMemberId(member.getId())
                 .stream()
-                .map(loanRecord -> new AccountBorrowResponseDto(
+                .map(loanRecord -> new AccountShowLoanResponseDto.Loan(
                         loanRecord.getMoney(),
                         loanRecord.getInterest(),
-                        loanRecord.getLoanExpirationDate()
-                ))
+                        loanRecord.getLoanExpirationDate()))
                 .collect(Collectors.toList());
 
-        return borrows;
+        return loans;
     }
 
 }
