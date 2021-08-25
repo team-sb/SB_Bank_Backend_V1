@@ -15,7 +15,7 @@ import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
-import com.example.sbbank.payload.response.AccountBorrowResponseDto;
+import com.example.sbbank.payload.response.AccountChargeLoanResponseDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -142,7 +142,7 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public AccountBorrowResponseDto borrow(AccountChargeRequestDto request, Member member) {
+    public AccountChargeLoanResponseDto borrow(AccountChargeRequestDto request, Member member) {
 
         Double interest = request.getMoney() * 0.001;
 
@@ -167,7 +167,7 @@ public class AccountServiceImpl implements AccountService{
 
         loanRepository.save(loanRecord);
 
-        return AccountBorrowResponseDto.builder()
+        return AccountChargeLoanResponseDto.builder()
                 .money(loanRecord.getMoney())
                 .interest(loanRecord.getInterest())
                 .loanExpirationDate(loanRecord.getLoanExpirationDate())

@@ -1,6 +1,6 @@
 package com.example.sbbank.controller;
 
-import com.example.sbbank.payload.response.AccountBorrowResponseDto;
+import com.example.sbbank.payload.response.AccountShowLoanResponseDto;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
@@ -10,8 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,8 +38,8 @@ public class UserController {
     }
 
     @GetMapping("/loan")
-    public List<AccountBorrowResponseDto> borrow(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return userServiceImpl.borrow(userDetails.getMember());
+    public AccountShowLoanResponseDto borrow(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return new AccountShowLoanResponseDto(userServiceImpl.borrow(userDetails.getMember()));
     }
 
 }

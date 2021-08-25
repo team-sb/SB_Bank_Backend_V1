@@ -8,7 +8,7 @@ import java.util.Date;
 @Getter
 @Builder
 @AllArgsConstructor
-public class AccountBorrowResponseDto {
+public class AccountChargeLoanResponseDto {
         private Integer money;
         private Double interest;
         private Date loanExpirationDate;
