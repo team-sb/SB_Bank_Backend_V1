@@ -1,13 +1,16 @@
 package com.example.sbbank.service.account;
 
+import com.example.sbbank.entity.Authority;
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.Account;
 import com.example.sbbank.entity.account.AccountRepository;
-import com.example.sbbank.entity.account.Record;
-import com.example.sbbank.entity.account.RecordRepository;
+import com.example.sbbank.entity.account.record.Record;
+import com.example.sbbank.entity.account.record.RecordRepository;
 import com.example.sbbank.entity.member.Member;
+import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.AccountAlreadyExistsException;
 import com.example.sbbank.exception.AccountNotFoundException;
+import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
@@ -21,14 +24,14 @@ import java.util.Random;
 public class AccountService {
     private final RecordRepository recordRepository;
     private final AccountRepository accountRepository;
+    private final MemberRepository memberRepository;
 
     public AccountRegistrationResponseDto register(Member member) {
         if(accountRepository.existsByMemberId(member.getId())) {
             throw new AccountAlreadyExistsException();
         }
 
-        Random rd = new Random();
-        Integer rdAcc = rd.nextInt(999999999) + 111111111;
+        Integer rdAcc = new Random().nextInt(999999999) + 111111111;
 
         Account account = Account.builder()
                 .accountNumber(rdAcc)
@@ -36,6 +39,7 @@ public class AccountService {
                 .member(member)
                 .build();
 
+        setAuthority(member);
         accountRepository.save(account);
         return new AccountRegistrationResponseDto(rdAcc);
     }
@@ -92,6 +96,7 @@ public class AccountService {
             receiveRecord.setTransactionType(Transaction.RECEIVE);
         }
 
+        setAuthority(member);
         recordRepository.save(sendRecord);
         recordRepository.save(receiveRecord);
         return "success record";
@@ -117,7 +122,19 @@ public class AccountService {
                     })
                     .orElseThrow(AccountNotFoundException::new);
         }
+
+        setAuthority(member);
         return "success charge";
+    }
+
+    public Member setAuthority(Member member) {
+        return memberRepository.findById(member.getId())
+                .map(member1 -> {
+                    member1.setAuthority(Authority.ROLE_USER);
+                    memberRepository.save(member1);
+                    return member1;
+                })
+                .orElseThrow(UserNotFoundException::new);
     }
 
 }
