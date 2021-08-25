@@ -7,7 +7,7 @@ import com.example.sbbank.exception.InvalidPasswordException;
 import com.example.sbbank.exception.UserAlreadyExistsException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.MemberSecLoginRequestDto;
-import com.example.sbbank.payload.response.TokenResponseDto;
+import com.example.sbbank.payload.response.SecTokenResponseDto;
 import com.example.sbbank.security.jwt.JwtTokenProvider;
 import com.example.sbbank.payload.request.MemberLoginRequestDto;
 import com.example.sbbank.payload.request.MemberJoinRequestDto;
@@ -51,12 +51,24 @@ public class AuthService {
         return tokenProvider.createAccessToken(member.getUsername(), member.getAuthority());
     }
 
-    public TokenResponseDto secLogin(MemberSecLoginRequestDto request, Member member) {
+    public SecTokenResponseDto secLogin(MemberSecLoginRequestDto request, Member member) {
         if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
             throw new InvalidPasswordException();
         }
 
-        return tokenProvider.createToken(member.getUsername(), member.getAuthority());
+        Member memberAuthority = setAuthority(member);
+
+        return tokenProvider.createSecToken(member.getUsername(), memberAuthority.getAuthority());
+    }
+
+    public Member setAuthority(Member member) {
+        return memberRepository.findById(member.getId())
+                .map(member1 -> {
+                    member1.setAuthority(Authority.ROLE_MANAGER);
+                    memberRepository.save(member1);
+                    return member1;
+                })
+                .orElseThrow(UserNotFoundException::new);
     }
 
 }
