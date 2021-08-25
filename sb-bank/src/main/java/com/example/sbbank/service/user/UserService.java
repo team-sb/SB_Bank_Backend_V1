@@ -2,7 +2,7 @@ package com.example.sbbank.service.user;
 
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.AccountRepository;
-import com.example.sbbank.entity.account.record.RecordRepository;
+import com.example.sbbank.entity.account.record.Transfer.TransferRecordRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final AccountRepository accountRepository;
-    private final RecordRepository recordRepository;
+    private final TransferRecordRepository transferRecordRepository;
 
     public UserBalanceResponseDto balance(Member member) {
 
@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public UserTransactionResponseDto everyTransaction(Member member) {
-        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(member.getId())
+        List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     public UserTransactionResponseDto sendTransaction(Member member) {
-        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(member.getId())
+        List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
@@ -61,7 +61,7 @@ public class UserService {
     }
 
     public UserTransactionResponseDto receiveTransaction(Member member) {
-        List<UserTransactionResponseDto.everyTransaction> records = recordRepository.findByMemberId(member.getId())
+        List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),

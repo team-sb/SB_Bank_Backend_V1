@@ -1,4 +1,4 @@
-package com.example.sbbank.entity.account.record;
+package com.example.sbbank.entity.account.record.Transfer;
 
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.Transaction;
@@ -7,12 +7,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Record {
+@Entity
+public class TransferRecord {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
