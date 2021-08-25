@@ -1,10 +1,4 @@
 spring:
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PWD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,6 +9,12 @@ spring:
 
     jackson:
       property-naming-strategy: SNAKE_CASE
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PWD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 jwt:
   header: ${HEADER}
