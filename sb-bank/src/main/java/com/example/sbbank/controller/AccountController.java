@@ -2,6 +2,7 @@ package com.example.sbbank.controller;
 
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
+import com.example.sbbank.payload.response.AccountBorrowResponseDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
 import com.example.sbbank.service.account.AccountService;
@@ -32,6 +33,12 @@ public class AccountController {
     public String charge(@RequestBody AccountChargeRequestDto request,
                          @AuthenticationPrincipal CustomUserDetails userDetails) {
         return accountService.charge(request, userDetails.getMember());
+    }
+
+    @PostMapping("/borrow")
+    public AccountBorrowResponseDto.Borrow borrow(@RequestBody AccountChargeRequestDto request,
+                                           @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return accountService.borrow(request, userDetails.getMember());
     }
 
 }
