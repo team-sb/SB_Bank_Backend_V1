@@ -24,7 +24,7 @@ public class UserService {
                 .map(account -> account.getBalance())
                 .orElseThrow(AccountNotFoundException::new);
 
-        return new UserBalanceResponseDto(balance);
+        return new UserBalanceResponseDto(balance, member.getName());
     }
 
     public UserTransactionResponseDto everyTransaction(Member member) {
