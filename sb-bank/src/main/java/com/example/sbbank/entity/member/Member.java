@@ -22,6 +22,7 @@ public class Member {
     private String password;
     private String secPassword;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
