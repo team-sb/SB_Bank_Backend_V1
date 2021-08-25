@@ -150,6 +150,7 @@ public class AccountService {
                 .money(request.getMoney())
                 .interest(interest)
                 .loanExpirationDate(expirationDate)
+                .member(member)
                 .build();
 
         accountRepository.findByMemberId(member.getId())
