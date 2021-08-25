@@ -18,11 +18,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
 
+    @Override
     public String join(MemberJoinRequestDto request) {
         if(memberRepository.existsByNameOrUsername(request.getName(), request.getUsername())) {
             throw new UserAlreadyExistsException();
@@ -40,6 +42,7 @@ public class AuthService {
         return "success join";
     }
 
+    @Override
     public AccessTokenResponseDto login(MemberLoginRequestDto request) {
         Member member = memberRepository.findByUsername(request.getUsername())
                 .orElseThrow(UserNotFoundException::new);
@@ -51,6 +54,7 @@ public class AuthService {
         return tokenProvider.createAccessToken(member.getUsername(), member.getAuthority());
     }
 
+    @Override
     public SecTokenResponseDto secLogin(MemberSecLoginRequestDto request, Member member) {
         if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
             throw new InvalidPasswordException();

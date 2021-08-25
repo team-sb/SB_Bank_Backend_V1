@@ -26,13 +26,14 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService {
+public class AccountServiceImpl implements AccountService{
 
     private final TransferRecordRepository transferRecordRepository;
     private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final LoanRepository loanRepository;
 
+    @Override
     public AccountRegistrationResponseDto register(Member member) {
         if(accountRepository.existsByMemberId(member.getId())) {
             throw new AccountAlreadyExistsException();
@@ -51,6 +52,7 @@ public class AccountService {
         return new AccountRegistrationResponseDto(rdAcc);
     }
 
+    @Override
     public String transfer(AccountTransferRequestDto request, Member member) {
 
         Integer requestMoney = request.getMoney();
@@ -111,6 +113,7 @@ public class AccountService {
         return "success record";
     }
 
+    @Override
     public String charge(AccountChargeRequestDto request, Member member) {
 
         Integer requestMoney = request.getMoney();
@@ -138,6 +141,7 @@ public class AccountService {
         return "success charge";
     }
 
+    @Override
     public AccountBorrowResponseDto borrow(AccountChargeRequestDto request, Member member) {
 
         Double interest = request.getMoney() * 0.001;

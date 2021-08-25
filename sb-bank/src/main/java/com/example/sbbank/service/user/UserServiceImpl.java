@@ -16,11 +16,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
+
     private final AccountRepository accountRepository;
     private final TransferRecordRepository transferRecordRepository;
     private final LoanRepository loanRepository;
 
+    @Override
     public UserBalanceResponseDto balance(Member member) {
 
         Integer balance = accountRepository.findByMemberId(member.getId())
@@ -30,6 +32,7 @@ public class UserService {
         return new UserBalanceResponseDto(balance, member.getName());
     }
 
+    @Override
     public UserTransactionResponseDto everyTransaction(Member member) {
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
@@ -46,6 +49,7 @@ public class UserService {
         return new UserTransactionResponseDto(records);
     }
 
+    @Override
     public UserTransactionResponseDto sendTransaction(Member member) {
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
@@ -63,6 +67,7 @@ public class UserService {
         return new UserTransactionResponseDto(records);
     }
 
+    @Override
     public UserTransactionResponseDto receiveTransaction(Member member) {
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
@@ -80,6 +85,7 @@ public class UserService {
         return new UserTransactionResponseDto(records);
     }
 
+    @Override
     public List<AccountBorrowResponseDto> borrow(Member member) {
         List<AccountBorrowResponseDto> borrows = loanRepository.findByMemberId(member.getId())
                 .stream()
