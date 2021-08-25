@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     @PostMapping("/borrow")
-    public AccountBorrowResponseDto.Borrow borrow(@RequestBody AccountChargeRequestDto request,
+    public AccountBorrowResponseDto borrow(@RequestBody AccountChargeRequestDto request,
                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
         return accountService.borrow(request, userDetails.getMember());
     }
