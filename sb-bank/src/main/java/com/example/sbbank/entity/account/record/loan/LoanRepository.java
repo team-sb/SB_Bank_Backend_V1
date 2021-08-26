@@ -2,8 +2,8 @@ package com.example.sbbank.entity.account.record.loan;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface LoanRepository extends JpaRepository<LoanRecord, Integer> {
-    Optional<LoanRecord> findByMemberId(Integer id);
+    List<LoanRecord> findByMemberId(Integer id);
 }
