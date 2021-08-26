@@ -1,6 +1,6 @@
 package com.example.sbbank.controller;
 
-import com.example.sbbank.payload.response.AccountShowLoanResponseDto;
+import com.example.sbbank.payload.response.UserShowLoanResponseDto;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
@@ -38,8 +38,8 @@ public class UserController {
     }
 
     @GetMapping("/loan")
-    public AccountShowLoanResponseDto borrow(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return new AccountShowLoanResponseDto(userServiceImpl.borrow(userDetails.getMember()));
+    public UserShowLoanResponseDto borrow(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return userServiceImpl.borrow(userDetails.getMember());
     }
 
 }

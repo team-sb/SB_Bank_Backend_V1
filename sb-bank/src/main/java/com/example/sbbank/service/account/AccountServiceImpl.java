@@ -172,7 +172,6 @@ public class AccountServiceImpl implements AccountService{
                 .interest(loanRecord.getInterest())
                 .loanExpirationDate(loanRecord.getLoanExpirationDate())
                 .build();
-
     }
 
     public Member setAuthority(Member member) {

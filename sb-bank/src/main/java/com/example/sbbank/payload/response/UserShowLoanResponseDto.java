@@ -1,17 +1,14 @@
 package com.example.sbbank.payload.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class AccountShowLoanResponseDto {
+public class UserShowLoanResponseDto {
 
-    @JsonProperty("loans")
     private List<Loan> loans;
 
     @Getter
@@ -19,7 +16,7 @@ public class AccountShowLoanResponseDto {
     public static class Loan {
         private Integer money;
         private Double interest;
-        private Date loanExpirationDate;
+        private Date expirationDate;
     }
 
 }
