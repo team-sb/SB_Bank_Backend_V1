@@ -6,7 +6,7 @@ import com.example.sbbank.entity.account.record.Transfer.TransferRecordRepositor
 import com.example.sbbank.entity.account.record.loan.LoanRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
-import com.example.sbbank.payload.response.AccountShowLoanResponseDto;
+import com.example.sbbank.payload.response.UserShowLoanResponseDto;
 import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserTransactionResponseDto everyTransaction(Member member) {
+
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserTransactionResponseDto sendTransaction(Member member) {
+
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserTransactionResponseDto receiveTransaction(Member member) {
+
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
@@ -86,17 +89,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AccountShowLoanResponseDto.Loan> borrow(Member member) {
+    public UserShowLoanResponseDto borrow(Member member) {
 
-        List<AccountShowLoanResponseDto.Loan> loans = loanRepository.findByMemberId(member.getId())
+        List<UserShowLoanResponseDto.Loan> loans = loanRepository.findByMemberId(member.getId())
                 .stream()
-                .map(loanRecord -> new AccountShowLoanResponseDto.Loan(
+                .map(loanRecord -> new UserShowLoanResponseDto.Loan(
                         loanRecord.getMoney(),
                         loanRecord.getInterest(),
                         loanRecord.getLoanExpirationDate()))
                 .collect(Collectors.toList());
 
-        return loans;
+
+        return new UserShowLoanResponseDto(loans);
     }
 
 }
