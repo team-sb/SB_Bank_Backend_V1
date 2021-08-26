@@ -9,11 +9,11 @@ import java.util.List;
 @AllArgsConstructor
 public class UserShowLoanResponseDto {
 
-    private List<Loan> loans;
+    private List<loan> loans;
 
     @Getter
     @AllArgsConstructor
-    public static class Loan {
+    public static class loan {
         private Integer money;
         private Double interest;
         private Date expirationDate;

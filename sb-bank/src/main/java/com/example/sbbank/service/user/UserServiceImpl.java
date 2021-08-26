@@ -91,14 +91,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserShowLoanResponseDto borrow(Member member) {
 
-        List<UserShowLoanResponseDto.Loan> loans = loanRepository.findByMemberId(member.getId())
+        List<UserShowLoanResponseDto.loan> loans = loanRepository.findByMemberId(member.getId())
                 .stream()
-                .map(loanRecord -> new UserShowLoanResponseDto.Loan(
+                .map(loanRecord -> new UserShowLoanResponseDto.loan(
                         loanRecord.getMoney(),
                         loanRecord.getInterest(),
                         loanRecord.getLoanExpirationDate()))
                 .collect(Collectors.toList());
-
 
         return new UserShowLoanResponseDto(loans);
     }

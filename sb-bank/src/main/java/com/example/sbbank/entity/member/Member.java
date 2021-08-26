@@ -2,6 +2,7 @@ package com.example.sbbank.entity.member;
 
 import com.example.sbbank.entity.Authority;
 import com.example.sbbank.entity.account.Account;
+import com.example.sbbank.entity.account.record.loan.LoanRecord;
 import lombok.*;
 import javax.persistence.*;
 
