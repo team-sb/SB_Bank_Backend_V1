@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "loan")
 public class LoanRecord {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
