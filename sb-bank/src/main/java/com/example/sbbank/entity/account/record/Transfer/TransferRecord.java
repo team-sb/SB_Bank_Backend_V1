@@ -11,7 +11,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "transfer")
 public class TransferRecord {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
