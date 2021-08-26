@@ -1,6 +1,6 @@
 package com.example.sbbank.controller;
 
-import com.example.sbbank.payload.response.UserListResponseDto;
+import com.example.sbbank.payload.response.ShowUserListResponseDto;
 import com.example.sbbank.service.admin.AdminServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +14,8 @@ public class AdminController {
     private final AdminServiceImpl adminService;
 
     @GetMapping("/users")
-    public UserListResponseDto users() {
-        return adminService.users();
+    public ShowUserListResponseDto showUsers() {
+        return adminService.showUsers();
     }
 
 }
