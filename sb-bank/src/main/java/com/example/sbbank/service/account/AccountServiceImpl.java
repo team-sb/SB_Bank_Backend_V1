@@ -4,8 +4,8 @@ import com.example.sbbank.entity.Authority;
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.Account;
 import com.example.sbbank.entity.account.AccountRepository;
-import com.example.sbbank.entity.account.record.Transfer.TransferRecord;
-import com.example.sbbank.entity.account.record.Transfer.TransferRecordRepository;
+import com.example.sbbank.entity.account.record.transfer.TransferRecord;
+import com.example.sbbank.entity.account.record.transfer.TransferRecordRepository;
 import com.example.sbbank.entity.account.record.loan.LoanRecord;
 import com.example.sbbank.entity.account.record.loan.LoanRepository;
 import com.example.sbbank.entity.member.Member;
@@ -58,15 +58,19 @@ public class AccountServiceImpl implements AccountService{
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
 
-        Integer targetBalance = accountRepository.findByAccountNumber(request.getTarget())
+        Integer targetBalance = accountRepository.findByAccountNumber(request.getTargetAccount())
                 .map(account -> account.getBalance())
                 .orElseThrow(AccountNotFoundException::new);
-        Member targetId = accountRepository.findByAccountNumber(request.getTarget())
+        Member targetId = accountRepository.findByAccountNumber(request.getTargetAccount())
                 .map(account -> account.getMember())
+                .orElseThrow(AccountNotFoundException::new);
+        String targetName = accountRepository.findByAccountNumber(request.getTargetAccount())
+                .map(account -> account.getMember().getUsername())
                 .orElseThrow(AccountNotFoundException::new);
 
         TransferRecord sendTransferRecord = TransferRecord.builder()
-                .target(request.getTarget())
+                .targetAccount(request.getTargetAccount())
+                .targetName(targetName)
                 .money(requestMoney)
                 .transactionType(Transaction.RECEIVE)
                 .transactionDate(new Date())
@@ -76,7 +80,8 @@ public class AccountServiceImpl implements AccountService{
                 .build();
 
         TransferRecord receiveTransferRecord = TransferRecord.builder()
-                .target(member.getAccount().getAccountNumber())
+                .targetAccount(member.getAccount().getAccountNumber())
+                .targetName(member.getUsername())
                 .money(-requestMoney)
                 .transactionType(Transaction.SEND)
                 .transactionDate(new Date())
@@ -93,7 +98,7 @@ public class AccountServiceImpl implements AccountService{
                 })
                 .orElseThrow(AccountNotFoundException::new);
 
-        accountRepository.findByAccountNumber(request.getTarget())
+        accountRepository.findByAccountNumber(request.getTargetAccount())
                 .map(account -> {
                     account.setBalance(account.getBalance() - requestMoney);
                     accountRepository.save(account);
@@ -117,24 +122,13 @@ public class AccountServiceImpl implements AccountService{
     public String charge(AccountChargeRequestDto request, Member member) {
 
         Integer requestMoney = request.getMoney();
-
-        if(requestMoney < 0) {
-            accountRepository.findByMemberId(member.getId())
-                    .map(account -> {
-                        account.setBalance(account.getBalance() - requestMoney);
-                        accountRepository.save(account);
-                        return account;
-                    })
-                    .orElseThrow(AccountNotFoundException::new);
-        } else {
-            accountRepository.findByMemberId(member.getId())
-                    .map(account -> {
-                        account.setBalance(account.getBalance() + requestMoney);
-                        accountRepository.save(account);
-                        return account;
-                    })
-                    .orElseThrow(AccountNotFoundException::new);
-        }
+        accountRepository.findByMemberId(member.getId())
+                .map(account -> {
+                    account.setBalance(account.getBalance() + requestMoney);
+                    accountRepository.save(account);
+                    return account;
+                })
+                .orElseThrow(AccountNotFoundException::new);
 
         setAuthority(member);
 
