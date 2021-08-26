@@ -2,7 +2,7 @@ package com.example.sbbank.service.user;
 
 import com.example.sbbank.entity.Transaction;
 import com.example.sbbank.entity.account.AccountRepository;
-import com.example.sbbank.entity.account.record.Transfer.TransferRecordRepository;
+import com.example.sbbank.entity.account.record.transfer.TransferRecordRepository;
 import com.example.sbbank.entity.account.record.loan.LoanRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.exception.AccountNotFoundException;
@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
-                        record.getTarget(),
+                        record.getTargetAccount(),
+                        record.getTargetName(),
                         record.getMoney(),
                         record.getTransactionDate(),
                         record.getTransactionType(),
@@ -57,7 +58,8 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
-                        record.getTarget(),
+                        record.getTargetAccount(),
+                        record.getTargetName(),
                         record.getMoney(),
                         record.getTransactionDate(),
                         record.getTransactionType(),
@@ -76,7 +78,8 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(record -> new UserTransactionResponseDto.everyTransaction(
                         record.getMember().getId(),
-                        record.getTarget(),
+                        record.getTargetAccount(),
+                        record.getTargetName(),
                         record.getMoney(),
                         record.getTransactionDate(),
                         record.getTransactionType(),
