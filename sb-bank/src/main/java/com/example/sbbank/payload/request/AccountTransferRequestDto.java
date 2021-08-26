@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountTransferRequestDto {
-    private Integer target;
+
+    @JsonProperty("target_account")
+    private Integer targetAccount;
     private Integer money;
 
     @JsonProperty("sec_password")

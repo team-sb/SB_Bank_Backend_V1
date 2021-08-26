@@ -1,4 +1,4 @@
-package com.example.sbbank.entity.account.record.Transfer;
+package com.example.sbbank.entity.account.record.transfer;
 
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.Transaction;
@@ -16,7 +16,8 @@ public class TransferRecord {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer target;
+    private Integer targetAccount;
+    private String targetName;
 
     @Setter
     private Integer money;

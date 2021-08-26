@@ -1,4 +1,4 @@
-package com.example.sbbank.entity.account.record.Transfer;
+package com.example.sbbank.entity.account.record.transfer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

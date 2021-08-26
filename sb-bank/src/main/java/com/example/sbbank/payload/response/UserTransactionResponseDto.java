@@ -18,7 +18,8 @@ public class UserTransactionResponseDto {
     @AllArgsConstructor
     public static class everyTransaction {
         private Integer memberId;
-        private Integer target;
+        private Integer targetAccount;
+        private String targetName;
         private Integer money;
         private Date transactionDate;
         private Transaction transactionType;
