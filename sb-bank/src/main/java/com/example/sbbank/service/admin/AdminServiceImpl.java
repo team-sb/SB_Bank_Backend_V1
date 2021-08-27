@@ -2,6 +2,7 @@ package com.example.sbbank.service.admin;
 
 import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.member.MemberRepository;
+import com.example.sbbank.exception.AccountNotFoundException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.UpdateUserBalanceRequestDto;
 import com.example.sbbank.payload.response.ShowUserAccountInfoResponseDto;
@@ -46,7 +47,7 @@ public class AdminServiceImpl implements AdminService {
                         account.getAccountNumber(),
                         account.getBalance()
                 ))
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(AccountNotFoundException::new);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
                     accountRepository.save(account);
                     return account;
                 })
-                .orElseThrow();
+                .orElseThrow(AccountNotFoundException::new);
 
         return "success update";
     }
