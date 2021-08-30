@@ -21,4 +21,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .map(CustomUserDetails::new)
                 .orElseThrow(UserNotFoundException::new);
     }
+
 }

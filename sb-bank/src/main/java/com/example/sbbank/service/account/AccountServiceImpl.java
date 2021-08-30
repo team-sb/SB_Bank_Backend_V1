@@ -163,7 +163,7 @@ public class AccountServiceImpl implements AccountService{
                     accountRepository.save(account);
                     return account;
                 })
-                .orElseThrow();
+                .orElseThrow(AccountNotFoundException::new);
 
         loanRepository.save(loanRecord);
 

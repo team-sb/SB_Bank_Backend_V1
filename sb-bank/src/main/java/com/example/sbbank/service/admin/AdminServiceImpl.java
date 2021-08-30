@@ -3,7 +3,6 @@ package com.example.sbbank.service.admin;
 import com.example.sbbank.entity.account.AccountRepository;
 import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.AccountNotFoundException;
-import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.UpdateUserBalanceRequestDto;
 import com.example.sbbank.payload.response.ShowUserAccountInfoResponseDto;
 import com.example.sbbank.payload.response.ShowUserListResponseDto;
