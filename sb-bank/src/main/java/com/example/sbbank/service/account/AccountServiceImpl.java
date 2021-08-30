@@ -12,6 +12,7 @@ import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.AccountAlreadyExistsException;
 import com.example.sbbank.exception.AccountNotFoundException;
+import com.example.sbbank.exception.BalanceNotExistsException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
@@ -35,6 +36,8 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public AccountRegistrationResponseDto register(Member member) {
+        setAuthority(member);
+
         if(accountRepository.existsByMemberId(member.getId())) {
             throw new AccountAlreadyExistsException();
         }
@@ -47,16 +50,20 @@ public class AccountServiceImpl implements AccountService{
                 .member(member)
                 .build();
 
-        setAuthority(member);
         accountRepository.save(account);
         return new AccountRegistrationResponseDto(rdAcc);
     }
 
     @Override
     public String transfer(AccountTransferRequestDto request, Member member) {
+        setAuthority(member);
 
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
+
+        if(myBalance == 0) {
+            throw new BalanceNotExistsException();
+        }
 
         Integer targetBalance = accountRepository.findByAccountNumber(request.getTargetAccount())
                 .map(account -> account.getBalance())
@@ -111,7 +118,6 @@ public class AccountServiceImpl implements AccountService{
             receiveTransferRecord.setTransactionType(Transaction.RECEIVE);
         }
 
-        setAuthority(member);
         transferRecordRepository.save(sendTransferRecord);
         transferRecordRepository.save(receiveTransferRecord);
 
@@ -120,6 +126,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public String charge(AccountChargeRequestDto request, Member member) {
+        setAuthority(member);
 
         Integer requestMoney = request.getMoney();
         accountRepository.findByMemberId(member.getId())
@@ -130,13 +137,12 @@ public class AccountServiceImpl implements AccountService{
                 })
                 .orElseThrow(AccountNotFoundException::new);
 
-        setAuthority(member);
-
         return "success charge";
     }
 
     @Override
     public AccountChargeLoanResponseDto borrow(AccountChargeRequestDto request, Member member) {
+        setAuthority(member);
 
         Double interest = request.getMoney() * 0.001;
 
