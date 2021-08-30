@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final AdminServiceImpl adminService;
 
-    @GetMapping
+    @GetMapping("")
     public ShowUserListResponseDto showUsers() {
         return adminService.showUsers();
     }
