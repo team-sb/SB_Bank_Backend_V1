@@ -14,7 +14,9 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "User Not Found"),
 
     ACCOUNT_ALREADY_EXISTS(409, "Account Already Exists"),
-    ACCOUNT_NOT_FOUND(404, "Account Not Found");
+    ACCOUNT_NOT_FOUND(404, "Account Not Found"),
+
+    BALANCE_NOT_EXISTS(404, "Balance Not Exists");
 
     private final int status;
     private final String message;
