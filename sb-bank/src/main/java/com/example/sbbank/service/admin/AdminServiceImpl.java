@@ -31,8 +31,7 @@ public class AdminServiceImpl implements AdminService {
                         member.getId(),
                         member.getName(),
                         member.getUsername(),
-                        member.getAuthority(),
-                        member.getAccount().getAccountNumber()
+                        member.getAuthority()
                 ))
                 .collect(Collectors.toList());
 
