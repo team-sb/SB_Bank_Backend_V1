@@ -23,6 +23,7 @@ public class LoanRecord {
     @Max(value = 10000000)
     private Integer money;
     private Double interest;
+    private Date borrowedDate;
     private Date loanExpirationDate;
 
     @ManyToOne
