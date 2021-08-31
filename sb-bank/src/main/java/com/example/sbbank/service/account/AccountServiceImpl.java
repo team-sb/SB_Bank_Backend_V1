@@ -20,7 +20,6 @@ import com.example.sbbank.payload.response.AccountChargeLoanResponseDto;
 import com.example.sbbank.payload.response.AccountRegistrationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
