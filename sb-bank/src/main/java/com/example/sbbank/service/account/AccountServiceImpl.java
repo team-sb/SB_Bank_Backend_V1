@@ -55,7 +55,6 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public String transfer(AccountTransferRequestDto request, Member member) {
-        setAuthority(member);
 
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
@@ -117,6 +116,7 @@ public class AccountServiceImpl implements AccountService{
             receiveTransferRecord.setTransactionType(Transaction.RECEIVE);
         }
 
+        setAuthority(member);
         transferRecordRepository.save(sendTransferRecord);
         transferRecordRepository.save(receiveTransferRecord);
 
@@ -125,7 +125,6 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public String charge(AccountChargeRequestDto request, Member member) {
-        setAuthority(member);
 
         Integer requestMoney = request.getMoney();
         accountRepository.findByMemberId(member.getId())
@@ -136,12 +135,12 @@ public class AccountServiceImpl implements AccountService{
                 })
                 .orElseThrow(AccountNotFoundException::new);
 
+        setAuthority(member);
         return "success charge";
     }
 
     @Override
     public AccountChargeLoanResponseDto borrow(AccountChargeRequestDto request, Member member) {
-        setAuthority(member);
 
         Double interest = request.getMoney() * 0.001;
 
@@ -164,6 +163,7 @@ public class AccountServiceImpl implements AccountService{
                 })
                 .orElseThrow(AccountNotFoundException::new);
 
+        setAuthority(member);
         loanRepository.save(loanRecord);
 
         return AccountChargeLoanResponseDto.builder()
