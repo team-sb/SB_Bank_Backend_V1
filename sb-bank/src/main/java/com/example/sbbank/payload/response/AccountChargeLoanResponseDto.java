@@ -11,5 +11,6 @@ import java.util.Date;
 public class AccountChargeLoanResponseDto {
         private Integer money;
         private Double interest;
+        private Date borrowedDate;
         private Date loanExpirationDate;
 }

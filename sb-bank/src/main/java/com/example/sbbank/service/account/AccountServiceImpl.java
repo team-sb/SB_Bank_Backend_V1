@@ -170,6 +170,7 @@ public class AccountServiceImpl implements AccountService{
         return AccountChargeLoanResponseDto.builder()
                 .money(loanRecord.getMoney())
                 .interest(loanRecord.getInterest())
+                .borrowedDate(new Date())
                 .loanExpirationDate(loanRecord.getLoanExpirationDate())
                 .build();
     }

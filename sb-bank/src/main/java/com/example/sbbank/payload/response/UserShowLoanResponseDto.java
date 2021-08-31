@@ -16,6 +16,7 @@ public class UserShowLoanResponseDto {
     public static class loan {
         private Integer money;
         private Double interest;
+        private Date borrowedDate;
         private Date expirationDate;
     }
 

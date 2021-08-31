@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
                 .map(loanRecord -> new UserShowLoanResponseDto.loan(
                         loanRecord.getMoney(),
                         loanRecord.getInterest(),
+                        loanRecord.getBorrowedDate(),
                         loanRecord.getLoanExpirationDate()))
                 .collect(Collectors.toList());
 
