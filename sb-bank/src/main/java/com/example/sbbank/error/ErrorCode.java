@@ -16,7 +16,7 @@ public enum ErrorCode {
     ACCOUNT_ALREADY_EXISTS(409, "Account Already Exists"),
     ACCOUNT_NOT_FOUND(404, "Account Not Found"),
 
-    BALANCE_NOT_EXISTS(404, "Balance Not Exists");
+    BALANCE_NOT_ENOUGH(404, "Balance Not Enough");
 
     private final int status;
     private final String message;
