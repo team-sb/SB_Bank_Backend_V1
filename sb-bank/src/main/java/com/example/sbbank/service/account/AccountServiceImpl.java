@@ -152,6 +152,7 @@ public class AccountServiceImpl implements AccountService{
         LoanRecord loanRecord = LoanRecord.builder()
                 .money(request.getMoney())
                 .interest(interest)
+                .borrowedDate(new Date())
                 .loanExpirationDate(expirationDate)
                 .member(member)
                 .build();
