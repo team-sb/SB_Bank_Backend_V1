@@ -18,7 +18,6 @@ public class ShowUserListResponseDto {
         private String name;
         private String userName;
         private Authority authority;
-        private Integer accountNumber;
     }
 
 }
