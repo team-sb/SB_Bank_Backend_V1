@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService{
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
 
-        if(myBalance == 0) {
+        if(myBalance == 0 || myBalance - requestMoney < 0) {
             throw new BalanceNotExistsException();
         }
 
