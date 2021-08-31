@@ -12,7 +12,7 @@ import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.AccountAlreadyExistsException;
 import com.example.sbbank.exception.AccountNotFoundException;
-import com.example.sbbank.exception.BalanceNotExistsException;
+import com.example.sbbank.exception.BalanceNotEnoughException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.AccountChargeRequestDto;
 import com.example.sbbank.payload.request.AccountTransferRequestDto;
@@ -59,8 +59,9 @@ public class AccountServiceImpl implements AccountService{
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
 
-        if(myBalance == 0 || myBalance - requestMoney < 0) {
-            throw new BalanceNotExistsException();
+        if((requestMoney < 0 && myBalance + requestMoney < 0)
+                || (requestMoney > 0 && myBalance - requestMoney < 0)) {
+            throw new BalanceNotEnoughException();
         }
 
         Integer targetBalance = accountRepository.findByAccountNumber(request.getTargetAccount())
