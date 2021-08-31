@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
                         .username(request.getUsername())
                         .password(passwordEncoder.encode(request.getPassword()))
                         .secPassword(passwordEncoder.encode(request.getSecPassword()))
-                        .authority(Authority.ROLE_ADMIN)
+                        .authority(Authority.ROLE_USER)
                         .build());
 
         return "success join";
