@@ -59,11 +59,6 @@ public class AccountServiceImpl implements AccountService{
         Integer requestMoney = request.getMoney();
         Integer myBalance = member.getAccount().getBalance();
 
-        if((requestMoney < 0 && myBalance + requestMoney < 0)
-                || (requestMoney > 0 && myBalance - requestMoney < 0)) {
-            throw new BalanceNotEnoughException();
-        }
-
         Integer targetBalance = accountRepository.findByAccountNumber(request.getTargetAccount())
                 .map(account -> account.getBalance())
                 .orElseThrow(AccountNotFoundException::new);
@@ -73,6 +68,11 @@ public class AccountServiceImpl implements AccountService{
         String targetName = accountRepository.findByAccountNumber(request.getTargetAccount())
                 .map(account -> account.getMember().getUsername())
                 .orElseThrow(AccountNotFoundException::new);
+
+        if((requestMoney < 0 && myBalance + requestMoney < 0)
+                || (requestMoney > 0 && targetBalance - requestMoney < 0)) {
+            throw new BalanceNotEnoughException();
+        }
 
         TransferRecord sendTransferRecord = TransferRecord.builder()
                 .targetAccount(request.getTargetAccount())
