@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserBalanceResponseDto {
-    private Integer balance;
     private String name;
+    private Integer accountNumber;
+    private Integer balance;
 }
