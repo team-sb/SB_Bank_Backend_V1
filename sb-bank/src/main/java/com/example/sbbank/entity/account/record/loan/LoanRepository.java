@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface LoanRepository extends JpaRepository<LoanRecord, Integer> {
     List<LoanRecord> findByMemberId(Integer id);
+    boolean deleteAllByMemberId(Integer id);
 }
