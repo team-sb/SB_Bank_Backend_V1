@@ -55,8 +55,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String exit(Member member) {
-        memberRepository.deleteByMemberId(member.getId());
+    public String exit(Integer id) {
+        memberRepository.deleteById(id);
 
         return "success exit";
     }

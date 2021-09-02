@@ -30,9 +30,9 @@ public class AuthController {
         return authServiceImpl.login(request);
     }
 
-    @DeleteMapping("/exit")
-    public String exit(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return authServiceImpl.exit(userDetails.getMember());
+    @DeleteMapping("/exit/{id}")
+    public String exit(@PathVariable Integer id) {
+        return authServiceImpl.exit(id);
     }
 
     @PostMapping("/sec-login")
