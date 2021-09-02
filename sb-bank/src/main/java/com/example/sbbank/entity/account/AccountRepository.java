@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     Optional<Account> findByMemberId(Integer id);
     Optional<Account> findByAccountNumber(Integer target);
-    Boolean existsByMemberId(Integer id);
+    boolean existsByMemberId(Integer id);
+    boolean deleteAllByMemberId(Integer id);
 }
