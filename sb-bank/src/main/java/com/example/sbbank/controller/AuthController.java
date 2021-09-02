@@ -30,6 +30,11 @@ public class AuthController {
         return authServiceImpl.login(request);
     }
 
+    @DeleteMapping("/exit")
+    public String exit(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return authServiceImpl.exit(userDetails.getMember());
+    }
+
     @PostMapping("/sec-login")
     public SecTokenResponseDto secLogin(@RequestBody MemberSecLoginRequestDto request,
                                         @AuthenticationPrincipal CustomUserDetails userDetails) {
