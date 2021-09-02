@@ -8,5 +8,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     Optional<Account> findByMemberId(Integer id);
     Optional<Account> findByAccountNumber(Integer target);
     boolean existsByMemberId(Integer id);
-    boolean deleteAllByMemberId(Integer id);
+    boolean deleteByMemberId(Integer id);
 }
