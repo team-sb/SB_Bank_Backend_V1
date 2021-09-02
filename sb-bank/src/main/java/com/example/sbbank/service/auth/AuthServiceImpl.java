@@ -18,6 +18,7 @@ import com.example.sbbank.payload.response.AccessTokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +62,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public String exit(Integer id) {
         accountRepository.deleteByMemberId(id);
         loanRepository.deleteAllByMemberId(id);
