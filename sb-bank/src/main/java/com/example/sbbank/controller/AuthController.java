@@ -5,6 +5,7 @@ import com.example.sbbank.payload.request.MemberJoinRequestDto;
 import com.example.sbbank.payload.request.MemberSecLoginRequestDto;
 import com.example.sbbank.payload.response.AccessTokenResponseDto;
 import com.example.sbbank.payload.response.SecTokenResponseDto;
+import com.example.sbbank.payload.response.UserExitResponseDto;
 import com.example.sbbank.security.auth.CustomUserDetails;
 import com.example.sbbank.service.auth.AuthServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class AuthController {
     }
 
     @DeleteMapping("/exit/{id}")
-    public String exit(@PathVariable Integer id) {
+    public UserExitResponseDto exit(@PathVariable Integer id) {
         return authServiceImpl.exit(id);
     }
 

@@ -11,6 +11,7 @@ import com.example.sbbank.exception.UserAlreadyExistsException;
 import com.example.sbbank.exception.UserNotFoundException;
 import com.example.sbbank.payload.request.MemberSecLoginRequestDto;
 import com.example.sbbank.payload.response.SecTokenResponseDto;
+import com.example.sbbank.payload.response.UserExitResponseDto;
 import com.example.sbbank.security.jwt.JwtTokenProvider;
 import com.example.sbbank.payload.request.MemberLoginRequestDto;
 import com.example.sbbank.payload.request.MemberJoinRequestDto;
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider tokenProvider;
 
     @Override
+    @Transactional
     public String join(MemberJoinRequestDto request) {
         if(memberRepository.existsByNameOrUsername(request.getName(), request.getUsername())) {
             throw new UserAlreadyExistsException();
@@ -50,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public AccessTokenResponseDto login(MemberLoginRequestDto request) {
         Member member = memberRepository.findByUsername(request.getUsername())
                 .orElseThrow(UserNotFoundException::new);
@@ -63,16 +66,26 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public String exit(Integer id) {
+    public UserExitResponseDto exit(Integer id) {
+        Member member = memberRepository.getById(id);
+
+        UserExitResponseDto memberInfo = new UserExitResponseDto(
+                member.getId(),
+                member.getName(),
+                member.getUsername(),
+                member.getAccount().getAccountNumber()
+        );
+
         accountRepository.deleteByMemberId(id);
         loanRepository.deleteAllByMemberId(id);
         transferRecordRepository.deleteAllByMemberId(id);
         memberRepository.deleteById(id);
 
-        return "success exit";
+        return memberInfo;
     }
 
     @Override
+    @Transactional
     public SecTokenResponseDto secLogin(MemberSecLoginRequestDto request, Member member) {
         if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
             throw new InvalidPasswordException();
