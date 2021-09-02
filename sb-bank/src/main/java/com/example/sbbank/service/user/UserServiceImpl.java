@@ -11,6 +11,8 @@ import com.example.sbbank.payload.response.UserBalanceResponseDto;
 import com.example.sbbank.payload.response.UserTransactionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final LoanRepository loanRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public UserBalanceResponseDto balance(Member member) {
 
         Integer balance = accountRepository.findByMemberId(member.getId())
@@ -33,6 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserTransactionResponseDto everyTransaction(Member member) {
 
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
@@ -52,6 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserTransactionResponseDto sendTransaction(Member member) {
 
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserTransactionResponseDto receiveTransaction(Member member) {
 
         List<UserTransactionResponseDto.everyTransaction> records = transferRecordRepository.findByMemberId(member.getId())
@@ -92,6 +98,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserShowLoanResponseDto borrow(Member member) {
 
         List<UserShowLoanResponseDto.loan> loans = loanRepository.findByMemberId(member.getId())

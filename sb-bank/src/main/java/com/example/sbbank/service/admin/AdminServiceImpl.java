@@ -9,8 +9,7 @@ import com.example.sbbank.payload.response.ShowUserListResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.Null;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +22,7 @@ public class AdminServiceImpl implements AdminService {
     private final AccountRepository accountRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public ShowUserListResponseDto showUsers() {
 
         List<ShowUserListResponseDto.users> userList = memberRepository.findAll()
@@ -39,6 +39,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ShowUserAccountInfoResponseDto showUserAccountInfo(Integer id) {
 
         return accountRepository.findByMemberId(id)
