@@ -55,6 +55,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public String exit(Member member) {
+        memberRepository.deleteByMemberId(member.getId());
+
+        return "success exit";
+    }
+
+    @Override
     public SecTokenResponseDto secLogin(MemberSecLoginRequestDto request, Member member) {
         if(!passwordEncoder.matches(request.getSecPassword(), member.getSecPassword())) {
             throw new InvalidPasswordException();

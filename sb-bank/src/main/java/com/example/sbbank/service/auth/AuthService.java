@@ -11,5 +11,6 @@ import com.example.sbbank.payload.response.SecTokenResponseDto;
 public interface AuthService {
     String join(MemberJoinRequestDto request);
     AccessTokenResponseDto login(MemberLoginRequestDto request);
+    String exit(Member member);
     SecTokenResponseDto secLogin(MemberSecLoginRequestDto request, Member member);
 }
