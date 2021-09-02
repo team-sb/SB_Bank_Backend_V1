@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TransferRecordRepository extends JpaRepository<TransferRecord, Long> {
     List<TransferRecord> findByMemberId(Integer id);
-    boolean deleteAllByMemberId(Integer id);
+    void deleteAllByMemberId(Integer id);
 }
