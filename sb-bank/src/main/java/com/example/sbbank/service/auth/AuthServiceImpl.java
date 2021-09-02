@@ -1,6 +1,9 @@
 package com.example.sbbank.service.auth;
 
 import com.example.sbbank.entity.Authority;
+import com.example.sbbank.entity.account.AccountRepository;
+import com.example.sbbank.entity.account.record.loan.LoanRepository;
+import com.example.sbbank.entity.account.record.transfer.TransferRecordRepository;
 import com.example.sbbank.entity.member.Member;
 import com.example.sbbank.entity.member.MemberRepository;
 import com.example.sbbank.exception.InvalidPasswordException;
@@ -21,6 +24,9 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
+    private final AccountRepository accountRepository;
+    private final LoanRepository loanRepository;
+    private final TransferRecordRepository transferRecordRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
 
@@ -57,6 +63,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String exit(Integer id) {
         memberRepository.deleteById(id);
+        accountRepository.deleteAllByMemberId(id);
+        loanRepository.deleteAllByMemberId(id);
+        transferRecordRepository.deleteAllByMemberId(id);
 
         return "success exit";
     }
