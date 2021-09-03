@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
                 .map(account -> account.getBalance())
                 .orElseThrow(AccountNotFoundException::new);
 
-        return new UserBalanceResponseDto(member.getName(), member.getAccount().getAccountNumber(), balance);
+        return new UserBalanceResponseDto(member.getId(), member.getName(), member.getAccount().getAccountNumber(), balance);
     }
 
     @Override
